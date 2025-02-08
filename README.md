@@ -1,5 +1,6 @@
 # Kraken Overview
-  Para este pequeño poryecto trabajaremos: [Tawet](https://github.com/MeLLamoTawet) y [David](https://github.com/DavidDeLaTorre0).
+  Kraken es una aplicación básica con el objetivo de registrar o loggear a un usuario - CR (Create - Read) y este pueda acceder a su home.
+  Para este pequeño proyecto trabajaremos: [Tawet](https://github.com/MeLLamoTawet) y [David](https://github.com/DavidDeLaTorre0).
 
 ## Versiones
 Trabajaremos con las siguiente version: 
