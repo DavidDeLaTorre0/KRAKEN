@@ -115,7 +115,7 @@ fun LoginScreen(){
                 Button(
                     onClick = { /* Acción del botón 1 */ },
                     colors = ButtonDefaults.buttonColors(containerColor = Botones),
-                    modifier = Modifier.width(120.dp)
+                    modifier = Modifier.width(125.dp)
                 ) {
                     Text("Entrar", fontSize = 14.sp)
                 }
@@ -127,7 +127,7 @@ fun LoginScreen(){
                 Button(
                     onClick = { /* Acción del botón 2 */ },
                     colors = ButtonDefaults.buttonColors(containerColor = Botones),
-                    modifier = Modifier.width(120.dp)
+                    modifier = Modifier.width(125.dp)
                 ) {
                     Text("Registrarse", fontSize = 14.sp)
                 }

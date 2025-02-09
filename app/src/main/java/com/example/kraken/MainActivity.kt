@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.KRAKENTheme
 import com.example.kraken.views.LoginScreen
 
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
             KRAKENTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Fondo
                 ) {
                     LoginScreen()
                 }
