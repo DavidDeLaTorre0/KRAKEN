@@ -1,5 +1,6 @@
 package com.example.kraken
 
+import HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Fondo
                 ) {
-                    LoginScreen()
+                    HomeScreen()
                 }
             }
         }

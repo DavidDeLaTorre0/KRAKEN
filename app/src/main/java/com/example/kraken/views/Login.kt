@@ -27,7 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.kraken.ui.theme.Botones
+import com.example.kraken.ui.theme.BorderInput
+import com.example.kraken.ui.theme.Boton
+import com.example.kraken.ui.theme.Input
+import com.example.kraken.ui.theme.Texto
 
 @Preview(showBackground = true, backgroundColor = 0xFF7FA1C3)
 @Composable
@@ -47,7 +50,7 @@ fun LoginScreen(){
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text("KRAKEN", fontSize = 80.sp)
+            Text("KRAKEN", fontSize = 80.sp, color = Texto)
         }
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -61,17 +64,18 @@ fun LoginScreen(){
                 Column(modifier = Modifier.align(Alignment.TopStart)) {
                     Text(
                         text = "Nombre usuario:",
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 4.dp),
+                        color = Texto
                     )
                     OutlinedTextField(
                         value = username,
                         onValueChange = { username = it },
-                        label = { Text("LordSalchicha") },
                         shape = RoundedCornerShape(36.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Blue,
+                            focusedBorderColor = BorderInput,
                             unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray
+                            unfocusedContainerColor = Color.LightGray,
+                            focusedContainerColor = Input,
                         )
                     )
                 }
@@ -87,17 +91,18 @@ fun LoginScreen(){
                 Column(modifier = Modifier.align(Alignment.TopStart)) {
                     Text(
                         text = "Contraseña:",
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 4.dp),
+                        color = Texto
                     )
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("********") },
                         shape = RoundedCornerShape(36.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Blue,
+                            focusedBorderColor = BorderInput,
                             unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray
+                            unfocusedContainerColor = Color.LightGray,
+                            focusedContainerColor = Input,
                         )
                     )
                 }
@@ -114,7 +119,7 @@ fun LoginScreen(){
             ) {
                 Button(
                     onClick = { /* Acción del botón 1 */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Botones),
+                    colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(125.dp)
                 ) {
                     Text("Entrar", fontSize = 14.sp)
@@ -126,7 +131,7 @@ fun LoginScreen(){
             ) {
                 Button(
                     onClick = { /* Acción del botón 2 */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Botones),
+                    colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(125.dp)
                 ) {
                     Text("Registrarse", fontSize = 14.sp)
