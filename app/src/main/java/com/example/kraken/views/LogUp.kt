@@ -31,9 +31,11 @@ import com.example.kraken.ui.theme.Botones
 
 @Preview(showBackground = true, backgroundColor = 0xFF7FA1C3)
 @Composable
-fun LoginScreen(){
+fun LogUpScreen(){
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var password2 by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -104,6 +106,56 @@ fun LoginScreen(){
             }
         }
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box {
+                Column(modifier = Modifier.align(Alignment.TopStart)) {
+                    Text(
+                        text = "Repita la contraseña:",
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    OutlinedTextField(
+                        value = password2,
+                        onValueChange = { password2 = it },
+                        label = { Text("********") },
+                        shape = RoundedCornerShape(36.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.Blue,
+                            unfocusedBorderColor = Color.Gray,
+                            unfocusedContainerColor = Color.LightGray
+                        )
+                    )
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box {
+                Column(modifier = Modifier.align(Alignment.TopStart)) {
+                    Text(
+                        text = "Correo:",
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text("pepito@gmail.com") },
+                        shape = RoundedCornerShape(36.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.Blue,
+                            unfocusedBorderColor = Color.Gray,
+                            unfocusedContainerColor = Color.LightGray
+                        )
+                    )
+                }
+            }
+        }
+
         // Botones
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -113,21 +165,9 @@ fun LoginScreen(){
                 modifier = Modifier.padding(8.dp)
             ) {
                 Button(
-                    onClick = { /* Acción del botón 1 */ },
+                    onClick = { /* Acción del botón */ },
                     colors = ButtonDefaults.buttonColors(containerColor = Botones),
-                    modifier = Modifier.width(120.dp)
-                ) {
-                    Text("Entrar", fontSize = 14.sp)
-                }
-            }
-
-            Column(
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Button(
-                    onClick = { /* Acción del botón 2 */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Botones),
-                    modifier = Modifier.width(120.dp)
+                    modifier = Modifier.width(270.dp)
                 ) {
                     Text("Registrarse", fontSize = 14.sp)
                 }
