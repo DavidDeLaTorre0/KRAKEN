@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -25,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kraken.ui.theme.Botones
 import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.Inputs
 
@@ -99,6 +103,36 @@ fun LoginScreen(){
                             unfocusedContainerColor = Color.LightGray
                         )
                     )
+                }
+            }
+        }
+
+        // Botones
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Button(
+                    onClick = { /* Acción del botón 1 */ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Botones),
+                    modifier = Modifier.width(120.dp)
+                ) {
+                    Text("Entrar", fontSize = 14.sp)
+                }
+            }
+
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Button(
+                    onClick = { /* Acción del botón 2 */ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Botones),
+                    modifier = Modifier.width(120.dp)
+                ) {
+                    Text("Registrarse", fontSize = 14.sp)
                 }
             }
         }
