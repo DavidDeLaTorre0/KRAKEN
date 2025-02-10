@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kraken.componets.CustomTextField
 import com.example.kraken.ui.theme.BorderInput
 import com.example.kraken.ui.theme.Boton
 import com.example.kraken.ui.theme.Input
@@ -62,26 +63,11 @@ fun LogUpScreen(){
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Nombre usuario:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Nombre usuario:",
+                value = username,
+                onValueChange = { username = it }
+            )
         }
 
         // Campo de contraseña
@@ -89,78 +75,33 @@ fun LogUpScreen(){
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Contraseña:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Contraseña:",
+                value = password,
+                onValueChange = { password = it }
+            )
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Repita la contraseña:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = password2,
-                        onValueChange = { password2 = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Repita la contraseña:",
+                value = password2,
+                onValueChange = { password2 = it }
+            )
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Correo:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Correo:",
+                value = email,
+                onValueChange = { email = it }
+            )
         }
 
         // Botones
