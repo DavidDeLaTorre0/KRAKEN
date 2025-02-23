@@ -1,9 +1,11 @@
-package com.example.kraken.viewmodel
+package com.example.kraken
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.kraken.viewmodel.PokemonViewModel
 import com.example.kraken.views.HomeScreen
 import com.example.kraken.views.LogUpScreen
 import com.example.kraken.views.LoginScreen
@@ -15,8 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun NavigationWrapper(
     navHostController: NavHostController,
     auth: FirebaseAuth,
-    db: FirebaseFirestore,
-    modifier: Any
+    db: FirebaseFirestore
 ) {
 
     NavHost(navController = navHostController, startDestination = "logIn") {

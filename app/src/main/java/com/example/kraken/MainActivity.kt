@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.KRAKENTheme
-import com.example.kraken.viewmodel.NavigationWrapper
+import com.example.kraken.viewmodel.PokemonViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -25,6 +25,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var navHostController: NavHostController
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var viewModel: PokemonViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -35,14 +37,15 @@ class MainActivity : ComponentActivity() {
             KRAKENTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    containerColor = Fondo // El color de fondo del Scaffold
+                    containerColor = Fondo
                 ) { paddingValues ->
-                    // Asegúrate de envolver tu contenido en un Modifier.padding(paddingValues)
+
                     NavigationWrapper(
                         navHostController,
                         auth,
                         db,
-                        modifier = Modifier.padding(paddingValues)
+                        modifier = Modifier.padding(paddingValues),
+                        viewModel = viewModel
                     )
                 }
             }

@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kraken.ui.componentes.CustomTextField
 import com.example.kraken.ui.theme.BorderInput
 import com.example.kraken.ui.theme.Boton
 import com.example.kraken.ui.theme.Input
@@ -41,7 +42,6 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
     var password2 by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("")}
-    var boolean by remember { mutableStateOf(false)}
     val emailPattern = "^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.es|outlook\\.com)$".toRegex()
 
         Column(
@@ -66,26 +66,11 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Nombre usuario:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Nombre usuario:",
+                value = username,
+                onValueChange = { username = it }
+            )
         }
 
         // Campo de contraseña
@@ -93,78 +78,33 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Contraseña:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Contraseña:",
+                value = password,
+                onValueChange = { password = it }
+            )
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Repita la contraseña:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = password2,
-                        onValueChange = { password2 = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Repita la contraseña:",
+                value = password2,
+                onValueChange = { password2 = it }
+            )
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Correo:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Correo:",
+                value = email,
+                onValueChange = { email = it }
+            )
         }
         // Mostrar mensaje de error si es necesario
         if (errorMessage.isNotEmpty()) {

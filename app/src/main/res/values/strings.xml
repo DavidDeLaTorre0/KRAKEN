@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">KRAKEN</string>
+    <string name="error_empty_fields">Email o contraseña no pueden estar vacíos</string>
+    <string name="error_login_failed">Error al iniciar sesión</string>
 </resources>

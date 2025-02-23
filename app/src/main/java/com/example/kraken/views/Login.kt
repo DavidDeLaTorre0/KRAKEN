@@ -25,13 +25,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kraken.R
+import com.example.kraken.ui.componentes.CustomTextField
 import com.example.kraken.ui.theme.BorderInput
 import com.example.kraken.ui.theme.Boton
 import com.example.kraken.ui.theme.Input
 import com.example.kraken.ui.theme.Texto
 import com.google.firebase.auth.FirebaseAuth
+
 
 
 @Composable
@@ -62,26 +67,11 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Nombre usuario:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Nombre usuario:",
+                value = email,
+                onValueChange = { email = it }
+            )
         }
 
         // Campo de contraseña
@@ -89,26 +79,11 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Box {
-                Column(modifier = Modifier.align(Alignment.TopStart)) {
-                    Text(
-                        text = "Contraseña:",
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        color = Texto
-                    )
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        shape = RoundedCornerShape(36.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BorderInput,
-                            unfocusedBorderColor = Color.Gray,
-                            unfocusedContainerColor = Color.LightGray,
-                            focusedContainerColor = Input,
-                        )
-                    )
-                }
-            }
+            CustomTextField(
+                text = "Contraseña:",
+                value = password,
+                onValueChange = { password = it }
+            )
         }
         // Mensaje de error
         if (errorMessage.isNotEmpty()) {
@@ -131,6 +106,8 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
                     onClick = {
                         if(email.isBlank() || password.isBlank()){
                             errorMessage = "Email o contraseña no pueden estar vacíos"
+                        //stringResource(R.string.error_login_failed)
+                        //LocalContext.current.getString(R.string.error_login_failed)
                         }else{
                             errorMessage = ""
                             auth.signInWithEmailAndPassword(email, password)
