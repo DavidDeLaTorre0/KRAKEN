@@ -13,7 +13,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.KRAKENTheme
-import com.example.kraken.viewmodel.PokemonViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth

@@ -1,0 +1,39 @@
+Index: app/src/main/java/com/example/kraken/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken\r\n\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.navigation.NavHostController\r\nimport androidx.navigation.compose.rememberNavController\r\nimport com.example.kraken.ui.theme.Fondo\r\nimport com.example.kraken.ui.theme.KRAKENTheme\r\nimport com.example.kraken.viewmodel.PokemonViewModel\r\nimport com.google.firebase.Firebase\r\nimport com.google.firebase.auth.FirebaseAuth\r\nimport com.google.firebase.auth.auth\r\nimport com.google.firebase.firestore.FirebaseFirestore\r\nimport com.google.firebase.firestore.firestore\r\n\r\nclass MainActivity : ComponentActivity() {\r\n\r\n    private lateinit var navHostController: NavHostController\r\n    private lateinit var auth: FirebaseAuth\r\n    private lateinit var db: FirebaseFirestore\r\n\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        auth = Firebase.auth\r\n        db = Firebase.firestore\r\n        enableEdgeToEdge()\r\n        setContent {\r\n            navHostController = rememberNavController()\r\n            KRAKENTheme {\r\n                Scaffold(\r\n                    modifier = Modifier.fillMaxSize(),\r\n                    containerColor = Fondo\r\n                ) { paddingValues ->\r\n\r\n                    NavigationWrapper(\r\n                        navHostController,\r\n                        auth,\r\n                        db,\r\n                        modifier = Modifier.padding(paddingValues)\r\n                    )\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    //Para evitar seguir loggeado cuandon vuelves a iniciar la app\r\n    override fun onStart() {\r\n        super.onStart()\r\n        val currentUser = auth.currentUser\r\n\r\n        if (currentUser != null) {\r\n            Log.i(\"LOG\", \"Estoy logado\")\r\n            auth.signOut()\r\n            Log.i(\"LOG\", \"Estoy deslogado\")\r\n        }\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/MainActivity.kt b/app/src/main/java/com/example/kraken/MainActivity.kt
+--- a/app/src/main/java/com/example/kraken/MainActivity.kt	(revision 97e4917ec6cc7f31107071a4e0b9c796991a0843)
++++ b/app/src/main/java/com/example/kraken/MainActivity.kt	(date 1740309301669)
+@@ -13,7 +13,6 @@
+ import androidx.navigation.compose.rememberNavController
+ import com.example.kraken.ui.theme.Fondo
+ import com.example.kraken.ui.theme.KRAKENTheme
+-import com.example.kraken.viewmodel.PokemonViewModel
+ import com.google.firebase.Firebase
+ import com.google.firebase.auth.FirebaseAuth
+ import com.google.firebase.auth.auth
+Index: .idea/deploymentTargetSelector.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetSelector\">\r\n    <selectionStates>\r\n      <SelectionState runConfigName=\"MainActivity\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n      <SelectionState runConfigName=\"MainActivity (1)\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n    </selectionStates>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+--- a/.idea/deploymentTargetSelector.xml	(revision 7b2e658653922221c4b84db06b9641f24816857b)
++++ b/.idea/deploymentTargetSelector.xml	(date 1740309710194)
+@@ -5,9 +5,6 @@
+       <SelectionState runConfigName="MainActivity">
+         <option name="selectionMode" value="DROPDOWN" />
+       </SelectionState>
+-      <SelectionState runConfigName="MainActivity (1)">
+-        <option name="selectionMode" value="DROPDOWN" />
+-      </SelectionState>
+     </selectionStates>
+   </component>
+ </project>
+\ No newline at end of file
