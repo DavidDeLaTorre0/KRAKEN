@@ -73,7 +73,8 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
             CustomTextField(
                 text = "Contraseña:",
                 value = password,
-                onValueChange = { password = it }
+                onValueChange = { password = it },
+                isPassword = true
             )
         }
         // Mensaje de error
