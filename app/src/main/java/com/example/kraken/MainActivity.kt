@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var navHostController: NavHostController
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var viewModel: PokemonViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,7 @@ class MainActivity : ComponentActivity() {
                         navHostController,
                         auth,
                         db,
-                        modifier = Modifier.padding(paddingValues),
-                        viewModel = viewModel
+                        modifier = Modifier.padding(paddingValues)
                     )
                 }
             }

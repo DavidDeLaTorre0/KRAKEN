@@ -2,6 +2,7 @@ package com.example.kraken
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,8 +18,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun NavigationWrapper(
     navHostController: NavHostController,
     auth: FirebaseAuth,
-    db: FirebaseFirestore
+    db: FirebaseFirestore,
+    modifier: Modifier
 ) {
+    val pokemonViewModel: PokemonViewModel = viewModel()
 
     NavHost(navController = navHostController, startDestination = "logIn") {
         composable("logIn") {
@@ -39,7 +42,7 @@ fun NavigationWrapper(
                 db,
                 auth,
                 navigateToLogin = { navHostController.navigate("logIn") },
-                //viewModel = TODO()
+                viewModel = pokemonViewModel
             )
         }
     }

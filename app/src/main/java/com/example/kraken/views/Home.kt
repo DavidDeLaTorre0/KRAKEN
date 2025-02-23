@@ -18,8 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import com.example.kraken.data.model.Pokemon
 import com.example.kraken.ui.componentes.PokemonCard
@@ -34,7 +34,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () -> Unit, viewModel: PokemonViewModel) {
 
 
-    val pokemonList by viewModel.pokemonList.collectAsState()
+    val pokemonList by viewModel.pokemonList.observeAsState(emptyList())
+
 
     LaunchedEffect(Unit) {
         viewModel.fetchPokemonList()
@@ -47,6 +48,7 @@ fun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () ->
             navigateToLogin()
         }) }
     ) { paddingValues ->
+
         Content(paddingValues, pokemonList)
     }
 }
@@ -68,7 +70,6 @@ fun TopBar(onLogoutClick: () -> Unit) {
         }
     )
 }
-
 
 @Composable
 fun Content(paddingValues: PaddingValues, pokemonList: List<Pokemon>) {

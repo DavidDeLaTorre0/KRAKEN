@@ -14,7 +14,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.kraken.data.model.Pokemon
-
 @Composable
 fun PokemonCard(pokemon: Pokemon) {
     Card(
