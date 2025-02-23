@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.kraken.views
 
 import android.util.Log
@@ -186,15 +184,17 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
             ) {
                 Button(
                     onClick = {
-                        // Validar que las contraseñas coincidan
+
+                        //Validaciones
+
                         if (password != password2) {
                             errorMessage = "Las contraseñas no coinciden."
                         } else if (email.isBlank() || !email.matches(emailPattern)) {
-                            // Validar el correo
+
                             errorMessage = " Correo invalido \n pruebe a usar una de estas extensiones \n (@gmail.com, @yahoo.es, @outlook.com)."
                         }
                         else {
-                            errorMessage = "" // Limpiar el mensaje de error si todo está correcto
+                            errorMessage = ""
                             // Intentar crear el usuario
                             auth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener { task ->

@@ -15,7 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun NavigationWrapper(
     navHostController: NavHostController,
     auth: FirebaseAuth,
-    db: FirebaseFirestore
+    db: FirebaseFirestore,
+    modifier: Any
 ) {
 
     NavHost(navController = navHostController, startDestination = "logIn") {

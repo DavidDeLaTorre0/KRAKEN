@@ -6,7 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -32,11 +33,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             navHostController = rememberNavController()
             KRAKENTheme {
-                Surface(
+                Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    color = Fondo
-                ) {
-                    NavigationWrapper(navHostController, auth, db)
+                    containerColor = Fondo // El color de fondo del Scaffold
+                ) { paddingValues ->
+                    // Asegúrate de envolver tu contenido en un Modifier.padding(paddingValues)
+                    NavigationWrapper(
+                        navHostController,
+                        auth,
+                        db,
+                        modifier = Modifier.padding(paddingValues)
+                    )
                 }
             }
         }
