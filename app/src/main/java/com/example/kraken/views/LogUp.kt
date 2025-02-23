@@ -1,5 +1,6 @@
 package com.example.kraken.views
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kraken.ui.theme.BorderInput
@@ -35,7 +35,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun LogUpScreen(auth: FirebaseAuth, navigateToLogup: () -> Unit) {
+fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
@@ -173,7 +173,20 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogup: () -> Unit) {
                 modifier = Modifier.padding(8.dp)
             ) {
                 Button(
-                    onClick = { /* Acción del botón */ },
+                    onClick = {
+                        auth.createUserWithEmailAndPassword(email,password)
+                            .addOnCompleteListener{
+                                    task ->
+                                if(task.isSuccessful){
+                                    //Registrado
+                                    Log.i("REGIS", "Registro OK")
+                                    navigateToLogin()
+                                }else {
+                                    //Error
+                                    Log.i("REGIS", "Registro KO")
+                                }
+                            }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(270.dp)
                 ) {

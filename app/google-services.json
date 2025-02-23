@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "581120393127",
+    "project_id": "kraken-bece6",
+    "storage_bucket": "kraken-bece6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581120393127:android:85d32af0e3a8492cbdc082",
+        "android_client_info": {
+          "package_name": "com.example.kraken"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9_DEvWhRNzWThE7rnQHkp1ZtE46Z2bfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,5 @@
 package com.example.kraken.viewmodel
 
-import HomeScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,6 +9,7 @@ import com.example.kraken.views.LoginScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+
 @Composable
 fun NavigationWrapper(
     navHostController: NavHostController,
@@ -17,21 +17,22 @@ fun NavigationWrapper(
     db: FirebaseFirestore
 ) {
 
-    NavHost(navController = navHostController, startDestination ="initial"){
-        composable("logIn"){
+    NavHost(navController = navHostController, startDestination ="logIn"){
+        composable ("logIn"){
             LoginScreen(
-                navigateToLogin = {navHostController.navigate("logIn")},
-                navigateToHome = {navHostController.navigate("home")}
+                auth,
+                navigateToHome = {navHostController.navigate("home")},
+                navigateToLogUp = {navHostController.navigate("logUp")}
             )
         }
-        composable("logUp"){
+        composable ("logUp"){
             LogUpScreen(
                 auth,
-                navigateToLogup = {navHostController.navigate("logup")}
+                navigateToLogin = {navHostController.navigate("logIn")}
             )
         }
-        composable("home") {
-            HomeScreen(db)
-        }
+//        composable("home") {
+//            HomeScreen(db)
+//        }
     }
 }

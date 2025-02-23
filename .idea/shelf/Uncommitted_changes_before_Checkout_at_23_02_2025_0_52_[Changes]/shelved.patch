@@ -1,0 +1,322 @@
+Index: app/src/main/java/com/example/kraken/views/LogUp.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.views\r\n\r\nimport androidx.compose.foundation.layout.Arrangement\r\nimport androidx.compose.foundation.layout.Box\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Row\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.width\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material3.Button\r\nimport androidx.compose.material3.ButtonDefaults\r\nimport androidx.compose.material3.OutlinedTextField\r\nimport androidx.compose.material3.OutlinedTextFieldDefaults\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.mutableStateOf\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.runtime.setValue\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.example.kraken.componets.CustomTextField\r\nimport com.example.kraken.ui.theme.BorderInput\r\nimport com.example.kraken.ui.theme.Boton\r\nimport com.example.kraken.ui.theme.Input\r\nimport com.example.kraken.ui.theme.Texto\r\n\r\n@Preview(showBackground = true, backgroundColor = 0xFF7FA1C3)\r\n@Composable\r\nfun LogUpScreen(){\r\n    var username by remember { mutableStateOf(\"\") }\r\n    var password by remember { mutableStateOf(\"\") }\r\n    var password2 by remember { mutableStateOf(\"\") }\r\n    var email by remember { mutableStateOf(\"\") }\r\n\r\n    Column(\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .padding(top = 80.dp),\r\n        verticalArrangement = Arrangement.spacedBy(16.dp),\r\n        horizontalAlignment = Alignment.CenterHorizontally\r\n    ) {\r\n        // Logo o título \"KRAKEN\"\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            Text(\"KRAKEN\", fontSize = 80.sp, color = Texto)\r\n        }\r\n\r\n        Spacer(modifier = Modifier.height(50.dp))\r\n\r\n        // Campo de usuario\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            CustomTextField(\r\n                text = \"Nombre usuario:\",\r\n                value = username,\r\n                onValueChange = { username = it }\r\n            )\r\n        }\r\n\r\n        // Campo de contraseña\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            CustomTextField(\r\n                text = \"Contraseña:\",\r\n                value = password,\r\n                onValueChange = { password = it }\r\n            )\r\n        }\r\n\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            CustomTextField(\r\n                text = \"Repita la contraseña:\",\r\n                value = password2,\r\n                onValueChange = { password2 = it }\r\n            )\r\n        }\r\n\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            CustomTextField(\r\n                text = \"Correo:\",\r\n                value = email,\r\n                onValueChange = { email = it }\r\n            )\r\n        }\r\n\r\n        // Botones\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            Column(\r\n                modifier = Modifier.padding(8.dp)\r\n            ) {\r\n                Button(\r\n                    onClick = { /* Acción del botón */ },\r\n                    colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                    modifier = Modifier.width(270.dp)\r\n                ) {\r\n                    Text(\"Registrarse\", fontSize = 14.sp)\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/views/LogUp.kt b/app/src/main/java/com/example/kraken/views/LogUp.kt
+--- a/app/src/main/java/com/example/kraken/views/LogUp.kt	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/app/src/main/java/com/example/kraken/views/LogUp.kt	(date 1740267971291)
+@@ -1,7 +1,6 @@
+ package com.example.kraken.views
+ 
+ import androidx.compose.foundation.layout.Arrangement
+-import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.Spacer
+@@ -10,11 +9,8 @@
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.width
+-import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material3.Button
+ import androidx.compose.material3.ButtonDefaults
+-import androidx.compose.material3.OutlinedTextField
+-import androidx.compose.material3.OutlinedTextFieldDefaults
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -23,19 +19,16 @@
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import com.example.kraken.componets.CustomTextField
+-import com.example.kraken.ui.theme.BorderInput
+ import com.example.kraken.ui.theme.Boton
+-import com.example.kraken.ui.theme.Input
+ import com.example.kraken.ui.theme.Texto
++import com.google.firebase.auth.FirebaseAuth
+ 
+-@Preview(showBackground = true, backgroundColor = 0xFF7FA1C3)
+ @Composable
+-fun LogUpScreen(){
++fun LogUpScreen(auth: FirebaseAuth, navigateToLogIn: () -> Unit) {
+     var username by remember { mutableStateOf("") }
+     var password by remember { mutableStateOf("") }
+     var password2 by remember { mutableStateOf("") }
+@@ -113,7 +106,7 @@
+                 modifier = Modifier.padding(8.dp)
+             ) {
+                 Button(
+-                    onClick = { /* Acción del botón */ },
++                    onClick = { navigateToLogIn() },
+                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
+                     modifier = Modifier.width(270.dp)
+                 ) {
+Index: app/src/main/java/com/example/kraken/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken\r\n\r\nimport HomeScreen\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.MaterialTheme\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.material3.Surface\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport com.example.kraken.ui.theme.Fondo\r\nimport com.example.kraken.ui.theme.KRAKENTheme\r\nimport com.example.kraken.views.LoginScreen\r\n\r\nclass MainActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        enableEdgeToEdge()\r\n        setContent {\r\n            KRAKENTheme {\r\n                Surface(\r\n                    modifier = Modifier.fillMaxSize(),\r\n                    color = Fondo\r\n                ) {\r\n                    HomeScreen()\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/MainActivity.kt b/app/src/main/java/com/example/kraken/MainActivity.kt
+--- a/app/src/main/java/com/example/kraken/MainActivity.kt	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/app/src/main/java/com/example/kraken/MainActivity.kt	(date 1740267723846)
+@@ -1,7 +1,7 @@
+ package com.example.kraken
+ 
+-import HomeScreen
+ import android.os.Bundle
++import android.util.Log
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+ import androidx.activity.enableEdgeToEdge
+@@ -14,23 +14,50 @@
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.tooling.preview.Preview
++import androidx.navigation.NavHostController
++import androidx.navigation.compose.rememberNavController
+ import com.example.kraken.ui.theme.Fondo
+ import com.example.kraken.ui.theme.KRAKENTheme
++import com.example.kraken.viewmodel.NavigationWrapper
+ import com.example.kraken.views.LoginScreen
++import com.google.firebase.Firebase
++import com.google.firebase.auth.FirebaseAuth
++import com.google.firebase.auth.auth
++import com.google.firebase.firestore.FirebaseFirestore
++import com.google.firebase.firestore.firestore
+ 
+ class MainActivity : ComponentActivity() {
++
++    private lateinit var navHostController: NavHostController
++    private lateinit var auth : FirebaseAuth
++    private lateinit var db: FirebaseFirestore
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++        auth = Firebase.auth
++        db = Firebase.firestore
+         enableEdgeToEdge()
+         setContent {
++            navHostController = rememberNavController()
+             KRAKENTheme {
+                 Surface(
+                     modifier = Modifier.fillMaxSize(),
+                     color = Fondo
+                 ) {
+-                    HomeScreen()
++                    NavigationWrapper(navHostController,auth,db)
+                 }
+             }
+         }
+     }
++    //Una vez creada, al inciar verificamos que el usuario este desloggeado
++    override fun onStart() {
++        super.onStart()
++        val currentUser = auth.currentUser
++        if(currentUser!= null){
++
++           Log.i("AutoLog", "Estoy logado")
++            auth.signOut()
++            Log.i("AutoLog", "Estoy deslogado")
++        }
++    }
+ }
+\ No newline at end of file
+Index: gradle/libs.versions.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[versions]\r\nagp = \"8.8.0\"\r\nkotlin = \"2.0.0\"\r\ncoreKtx = \"1.15.0\"\r\njunit = \"4.13.2\"\r\njunitVersion = \"1.2.1\"\r\nespressoCore = \"3.6.1\"\r\nlifecycleRuntimeKtx = \"2.8.7\"\r\nactivityCompose = \"1.10.0\"\r\ncomposeBom = \"2024.04.01\"\r\n\r\n[libraries]\r\nandroidx-core-ktx = { group = \"androidx.core\", name = \"core-ktx\", version.ref = \"coreKtx\" }\r\njunit = { group = \"junit\", name = \"junit\", version.ref = \"junit\" }\r\nandroidx-junit = { group = \"androidx.test.ext\", name = \"junit\", version.ref = \"junitVersion\" }\r\nandroidx-espresso-core = { group = \"androidx.test.espresso\", name = \"espresso-core\", version.ref = \"espressoCore\" }\r\nandroidx-lifecycle-runtime-ktx = { group = \"androidx.lifecycle\", name = \"lifecycle-runtime-ktx\", version.ref = \"lifecycleRuntimeKtx\" }\r\nandroidx-activity-compose = { group = \"androidx.activity\", name = \"activity-compose\", version.ref = \"activityCompose\" }\r\nandroidx-compose-bom = { group = \"androidx.compose\", name = \"compose-bom\", version.ref = \"composeBom\" }\r\nandroidx-ui = { group = \"androidx.compose.ui\", name = \"ui\" }\r\nandroidx-ui-graphics = { group = \"androidx.compose.ui\", name = \"ui-graphics\" }\r\nandroidx-ui-tooling = { group = \"androidx.compose.ui\", name = \"ui-tooling\" }\r\nandroidx-ui-tooling-preview = { group = \"androidx.compose.ui\", name = \"ui-tooling-preview\" }\r\nandroidx-ui-test-manifest = { group = \"androidx.compose.ui\", name = \"ui-test-manifest\" }\r\nandroidx-ui-test-junit4 = { group = \"androidx.compose.ui\", name = \"ui-test-junit4\" }\r\nandroidx-material3 = { group = \"androidx.compose.material3\", name = \"material3\" }\r\n\r\n[plugins]\r\nandroid-application = { id = \"com.android.application\", version.ref = \"agp\" }\r\nkotlin-android = { id = \"org.jetbrains.kotlin.android\", version.ref = \"kotlin\" }\r\nkotlin-compose = { id = \"org.jetbrains.kotlin.plugin.compose\", version.ref = \"kotlin\" }\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+--- a/gradle/libs.versions.toml	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/gradle/libs.versions.toml	(date 1740267256692)
+@@ -8,6 +8,11 @@
+ lifecycleRuntimeKtx = "2.8.7"
+ activityCompose = "1.10.0"
+ composeBom = "2024.04.01"
++firebaseBom = "33.9.0"
++services = "4.4.2"
++crashlytics = "3.0.3"
++navigationCompose = "2.8.7"
++
+ 
+ [libraries]
+ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+@@ -25,8 +30,16 @@
+ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+ androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+ 
++firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref="firebaseBom"}
++firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics"}
++firebase-auth = {module = "com.google.firebase:firebase-auth-ktx"}
++firebase-firestore = { module= "com.google.firebase:firebase-firestore"}
++androidx-navigation-compose = {module = "androidx.navigation:navigation-compose", version.ref="navigationCompose"}
++
+ [plugins]
+ android-application = { id = "com.android.application", version.ref = "agp" }
+ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ 
++crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "crashlytics"}
++googleServices = {id = "com.google.gms.google-services", version.ref="services"}
+Index: build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nplugins {\r\n    alias(libs.plugins.android.application) apply false\r\n    alias(libs.plugins.kotlin.android) apply false\r\n    alias(libs.plugins.kotlin.compose) apply false\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle.kts b/build.gradle.kts
+--- a/build.gradle.kts	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/build.gradle.kts	(date 1740267219687)
+@@ -3,4 +3,6 @@
+     alias(libs.plugins.android.application) apply false
+     alias(libs.plugins.kotlin.android) apply false
+     alias(libs.plugins.kotlin.compose) apply false
++    alias(libs.plugins.googleServices) apply false
++    alias(libs.plugins.crashlytics) apply false
+ }
+\ No newline at end of file
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    alias(libs.plugins.android.application)\r\n    alias(libs.plugins.kotlin.android)\r\n    alias(libs.plugins.kotlin.compose)\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.kraken\"\r\n    compileSdk = 35\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.kraken\"\r\n        minSdk = 29\r\n        targetSdk = 35\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_11\r\n        targetCompatibility = JavaVersion.VERSION_11\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = \"11\"\r\n    }\r\n    buildFeatures {\r\n        compose = true\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(libs.androidx.core.ktx)\r\n    implementation(libs.androidx.lifecycle.runtime.ktx)\r\n    implementation(libs.androidx.activity.compose)\r\n    implementation(platform(libs.androidx.compose.bom))\r\n    implementation(libs.androidx.ui)\r\n    implementation(libs.androidx.ui.graphics)\r\n    implementation(libs.androidx.ui.tooling.preview)\r\n    implementation(libs.androidx.material3)\r\n    testImplementation(libs.junit)\r\n    androidTestImplementation(libs.androidx.junit)\r\n    androidTestImplementation(libs.androidx.espresso.core)\r\n    androidTestImplementation(platform(libs.androidx.compose.bom))\r\n    androidTestImplementation(libs.androidx.ui.test.junit4)\r\n    debugImplementation(libs.androidx.ui.tooling)\r\n    debugImplementation(libs.androidx.ui.test.manifest)\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/app/build.gradle.kts	(date 1740267285058)
+@@ -2,6 +2,8 @@
+     alias(libs.plugins.android.application)
+     alias(libs.plugins.kotlin.android)
+     alias(libs.plugins.kotlin.compose)
++    alias(libs.plugins.googleServices)
++    alias(libs.plugins.crashlytics)
+ }
+ 
+ android {
+@@ -41,6 +43,12 @@
+ 
+ dependencies {
+ 
++    implementation(platform(libs.firebase.bom))
++    implementation(libs.firebase.crashlytics)
++    implementation(libs.firebase.auth)
++    implementation(libs.androidx.navigation.compose)
++    implementation(libs.firebase.firestore)
++
+     implementation(libs.androidx.core.ktx)
+     implementation(libs.androidx.lifecycle.runtime.ktx)
+     implementation(libs.androidx.activity.compose)
+Index: app/src/main/java/com/example/kraken/views/Login.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.views\r\n\r\nimport androidx.compose.foundation.layout.Arrangement\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Row\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.width\r\nimport androidx.compose.material3.Button\r\nimport androidx.compose.material3.ButtonDefaults\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.mutableStateOf\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.runtime.setValue\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.example.kraken.componets.CustomTextField\r\nimport com.example.kraken.ui.theme.Boton\r\nimport com.example.kraken.ui.theme.Texto\r\n\r\n@Preview(showBackground = true, backgroundColor = 0xFF7FA1C3)\r\n@Composable\r\nfun LoginScreen(){\r\n    var username by remember { mutableStateOf(\"\") }\r\n    var password by remember { mutableStateOf(\"\") }\r\n\r\n    Column(\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .padding(top = 80.dp),\r\n        verticalArrangement = Arrangement.spacedBy(16.dp),\r\n        horizontalAlignment = Alignment.CenterHorizontally\r\n    ) {\r\n        // Logo o título \"KRAKEN\"\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            Text(\"KRAKEN\", fontSize = 80.sp, color = Texto)\r\n        }\r\n\r\n        Spacer(modifier = Modifier.height(50.dp))\r\n\r\n        // Campo de usuario\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            CustomTextField(\r\n                text = \"Nombre usuario:\",\r\n                value = username,\r\n                onValueChange = { username = it }\r\n            )\r\n        }\r\n\r\n        // Campo de contraseña\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            CustomTextField(\r\n                text = \"Contraseña:\",\r\n                value = password,\r\n                onValueChange = { password = it }\r\n            )\r\n        }\r\n\r\n        // Botones\r\n        Row(\r\n            modifier = Modifier.fillMaxWidth(),\r\n            horizontalArrangement = Arrangement.Center\r\n        ) {\r\n            Column(\r\n                modifier = Modifier.padding(8.dp)\r\n            ) {\r\n                Button(\r\n                    onClick = { /* Acción del botón 1 */ },\r\n                    colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                    modifier = Modifier.width(125.dp)\r\n                ) {\r\n                    Text(\"Entrar\", fontSize = 14.sp)\r\n                }\r\n            }\r\n\r\n            Column(\r\n                modifier = Modifier.padding(8.dp)\r\n            ) {\r\n                Button(\r\n                    onClick = { /* Acción del botón 2 */ },\r\n                    colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                    modifier = Modifier.width(125.dp)\r\n                ) {\r\n                    Text(\"Registrarse\", fontSize = 14.sp)\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/views/Login.kt b/app/src/main/java/com/example/kraken/views/Login.kt
+--- a/app/src/main/java/com/example/kraken/views/Login.kt	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/app/src/main/java/com/example/kraken/views/Login.kt	(date 1740268126159)
+@@ -1,5 +1,6 @@
+ package com.example.kraken.views
+ 
++import android.util.Log
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+@@ -25,11 +26,11 @@
+ import com.example.kraken.componets.CustomTextField
+ import com.example.kraken.ui.theme.Boton
+ import com.example.kraken.ui.theme.Texto
++import com.google.firebase.auth.FirebaseAuth
+ 
+-@Preview(showBackground = true, backgroundColor = 0xFF7FA1C3)
+ @Composable
+-fun LoginScreen(){
+-    var username by remember { mutableStateOf("") }
++fun LoginScreen(auth: FirebaseAuth, navigateToLogup: () -> Unit, navigateToHome: () -> Unit) {
++    var email by remember { mutableStateOf("") }
+     var password by remember { mutableStateOf("") }
+ 
+     Column(
+@@ -56,8 +57,8 @@
+         ) {
+             CustomTextField(
+                 text = "Nombre usuario:",
+-                value = username,
+-                onValueChange = { username = it }
++                value = email,
++                onValueChange = { email = it }
+             )
+         }
+ 
+@@ -82,7 +83,21 @@
+                 modifier = Modifier.padding(8.dp)
+             ) {
+                 Button(
+-                    onClick = { /* Acción del botón 1 */ },
++                    onClick = {
++                        auth.signInWithEmailAndPassword(email, password)
++                            .addOnCompleteListener { task ->
++
++                                if (task.isSuccessful) {
++                                    //Navegar al home
++                                    Log.i("LOGIN", "LOGIN OK")
++                                    navigateToHome()
++
++                                } else {
++                                    //Error
++                                    Log.i("LOGIN", "LOGIN KO")
++                                }
++                            }
++                    },
+                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
+                     modifier = Modifier.width(125.dp)
+                 ) {
+@@ -94,7 +109,7 @@
+                 modifier = Modifier.padding(8.dp)
+             ) {
+                 Button(
+-                    onClick = { /* Acción del botón 2 */ },
++                    onClick = { navigateToLogup() },
+                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
+                     modifier = Modifier.width(125.dp)
+                 ) {
+Index: .idea/deploymentTargetSelector.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetSelector\">\r\n    <selectionStates>\r\n      <SelectionState runConfigName=\"app\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n    </selectionStates>\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+--- a/.idea/deploymentTargetSelector.xml	(revision a818165de9ce79a99274323fc60993b52974a5a2)
++++ b/.idea/deploymentTargetSelector.xml	(date 1740267896108)
+@@ -5,6 +5,15 @@
+       <SelectionState runConfigName="app">
+         <option name="selectionMode" value="DROPDOWN" />
+       </SelectionState>
++      <SelectionState runConfigName="MainActivity">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
++      <SelectionState runConfigName="MainActivity (1)">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
++      <SelectionState runConfigName="MainActivity (2)">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
+     </selectionStates>
+   </component>
+ </project>
+\ No newline at end of file

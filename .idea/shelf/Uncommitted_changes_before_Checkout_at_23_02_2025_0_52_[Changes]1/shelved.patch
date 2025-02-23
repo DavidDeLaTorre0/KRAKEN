@@ -1,0 +1,50 @@
+Index: app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt b/app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt
+new file mode 100644
+--- /dev/null	(date 1740268041096)
++++ b/app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt	(date 1740268041096)
+@@ -0,0 +1,39 @@
++package com.example.kraken.viewmodel
++
++
++import androidx.compose.runtime.Composable
++import androidx.navigation.NavHostController
++import androidx.navigation.compose.NavHost
++import androidx.navigation.compose.composable
++import com.example.kraken.views.LogUpScreen
++import com.example.kraken.views.LoginScreen
++import com.google.firebase.auth.FirebaseAuth
++import com.google.firebase.firestore.FirebaseFirestore
++
++
++@Composable
++fun NavigationWrapper(
++    navHostController: NavHostController,
++    auth: FirebaseAuth,
++    db: FirebaseFirestore
++) {
++
++    NavHost(navController = navHostController, startDestination ="logIn"){
++        composable ("logIn"){
++            LoginScreen(
++                auth,
++                navigateToLogup = {navHostController.navigate("logUp")},
++                navigateToHome = {navHostController.navigate("home")}
++            )
++        }
++        composable ("logUp"){
++            LogUpScreen(
++                auth,
++                navigateToLogIn = {navHostController.navigate("logIn")}
++            )
++        }
++//        composable("home") {
++//           HomeScreen()
++//        }
++    }
++}
+\ No newline at end of file

@@ -1,5 +1,6 @@
 package com.example.kraken.views
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,11 +31,12 @@ import com.example.kraken.ui.theme.BorderInput
 import com.example.kraken.ui.theme.Boton
 import com.example.kraken.ui.theme.Input
 import com.example.kraken.ui.theme.Texto
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun LoginScreen(navigateToLogin: () -> Unit, navigateToHome: () -> Unit) {
-    var username by remember { mutableStateOf("") }
+fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp: () -> Unit) {
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Column(
@@ -67,8 +69,8 @@ fun LoginScreen(navigateToLogin: () -> Unit, navigateToHome: () -> Unit) {
                         color = Texto
                     )
                     OutlinedTextField(
-                        value = username,
-                        onValueChange = { username = it },
+                        value = email,
+                        onValueChange = { email = it },
                         shape = RoundedCornerShape(36.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = BorderInput,
@@ -117,7 +119,21 @@ fun LoginScreen(navigateToLogin: () -> Unit, navigateToHome: () -> Unit) {
                 modifier = Modifier.padding(8.dp)
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener { task ->
+
+                                if (task.isSuccessful) {
+                                    //Navegar
+                                    Log.i("LOGIN", "LOGIN OK")
+                                    navigateToHome()
+
+                                } else {
+                                    //Error
+                                    Log.i("LOGIN", "LOGIN KO")
+                                }
+                            }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(125.dp)
                 ) {
@@ -129,7 +145,9 @@ fun LoginScreen(navigateToLogin: () -> Unit, navigateToHome: () -> Unit) {
                 modifier = Modifier.padding(8.dp)
             ) {
                 Button(
-                    onClick = { /* Acción del botón 2 */ },
+                    onClick = {
+                        navigateToLogUp()
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(125.dp)
                 ) {

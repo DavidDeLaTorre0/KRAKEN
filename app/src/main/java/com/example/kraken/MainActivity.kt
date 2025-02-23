@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.KRAKENTheme
 import com.example.kraken.viewmodel.NavigationWrapper
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class MainActivity : ComponentActivity() {
 
@@ -22,8 +26,11 @@ class MainActivity : ComponentActivity() {
     private lateinit var db: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = Firebase.auth
+        db = Firebase.firestore
         enableEdgeToEdge()
         setContent {
+            navHostController = rememberNavController()
             KRAKENTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -41,9 +48,9 @@ class MainActivity : ComponentActivity() {
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
-            Log.i("aris", "Estoy logado")
+            Log.i("LOG", "Estoy logado")
             auth.signOut()
-            Log.i("aris", "Estoy deslogado")
+            Log.i("LOG", "Estoy deslogado")
         }
     }
 
