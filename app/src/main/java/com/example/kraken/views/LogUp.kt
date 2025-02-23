@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.kraken.views
 
 import android.util.Log
@@ -41,6 +43,7 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
     var password2 by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("")}
+    var boolean by remember { mutableStateOf(false)}
     val emailPattern = "^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.es|outlook\\.com)$".toRegex()
 
         Column(
@@ -189,7 +192,8 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
                         } else if (email.isBlank() || !email.matches(emailPattern)) {
                             // Validar el correo
                             errorMessage = " Correo invalido \n pruebe a usar una de estas extensiones \n (@gmail.com, @yahoo.es, @outlook.com)."
-                        } else {
+                        }
+                        else {
                             errorMessage = "" // Limpiar el mensaje de error si todo está correcto
                             // Intentar crear el usuario
                             auth.createUserWithEmailAndPassword(email, password)
@@ -199,7 +203,7 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
                                         navigateToLogin()
                                     } else {
                                         Log.i("REGIS", "Registro KO")
-                                        errorMessage = "Error al registrar el usuario."
+                                        errorMessage = "El correo ya esta asociado a otra cuenta"
                                     }
                                 }
                         }
@@ -213,3 +217,7 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
         }
     }
 }
+
+
+
+
