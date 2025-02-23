@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth
 fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -109,7 +110,15 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
                 }
             }
         }
-
+        // Mensaje de error
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
         // Botones
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -120,19 +129,26 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
             ) {
                 Button(
                     onClick = {
-                        auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener { task ->
+                        if(email.isBlank() || password.isBlank()){
+                            errorMessage = "Email o contraseña no pueden estar vacíos"
+                        }else{
+                            errorMessage = ""
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { task ->
 
-                                if (task.isSuccessful) {
-                                    //Navegar
-                                    Log.i("LOGIN", "LOGIN OK")
-                                    navigateToHome()
+                                    if (task.isSuccessful) {
+                                        //Navegar
 
-                                } else {
-                                    //Error
-                                    Log.i("LOGIN", "LOGIN KO")
+                                        Log.i("LOGIN", "LOGIN OK")
+                                        navigateToHome()
+
+                                    } else {
+                                        //Error
+                                        Log.i("LOGIN", "LOGIN KO")
+                                        errorMessage = "Error al iniciar sesión"
+                                    }
                                 }
-                            }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(125.dp)

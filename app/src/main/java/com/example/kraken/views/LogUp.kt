@@ -40,8 +40,10 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("")}
+    val emailPattern = "^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.es|outlook\\.com)$".toRegex()
 
-    Column(
+        Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 80.dp),
@@ -163,7 +165,14 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
                 }
             }
         }
-
+        // Mostrar mensaje de error si es necesario
+        if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    fontSize = 14.sp
+                )
+        }
         // Botones
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -174,18 +183,26 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
             ) {
                 Button(
                     onClick = {
-                        auth.createUserWithEmailAndPassword(email,password)
-                            .addOnCompleteListener{
-                                    task ->
-                                if(task.isSuccessful){
-                                    //Registrado
-                                    Log.i("REGIS", "Registro OK")
-                                    navigateToLogin()
-                                }else {
-                                    //Error
-                                    Log.i("REGIS", "Registro KO")
+                        // Validar que las contraseñas coincidan
+                        if (password != password2) {
+                            errorMessage = "Las contraseñas no coinciden."
+                        } else if (email.isBlank() || !email.matches(emailPattern)) {
+                            // Validar el correo
+                            errorMessage = " Correo invalido \n pruebe a usar una de estas extensiones \n (@gmail.com, @yahoo.es, @outlook.com)."
+                        } else {
+                            errorMessage = "" // Limpiar el mensaje de error si todo está correcto
+                            // Intentar crear el usuario
+                            auth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Log.i("REGIS", "Registro OK")
+                                        navigateToLogin()
+                                    } else {
+                                        Log.i("REGIS", "Registro KO")
+                                        errorMessage = "Error al registrar el usuario."
+                                    }
                                 }
-                            }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(270.dp)
