@@ -10,6 +10,7 @@ import com.example.kraken.data.remote.RetrofitInstance
 import kotlinx.coroutines.launch
 
 class PokemonViewModel : ViewModel() {
+
     private val repository = PokemonRepository(RetrofitInstance.apiService)
 
 
