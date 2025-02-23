@@ -1,0 +1,102 @@
+Index: app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.ui.componentes\r\n\r\nimport androidx.compose.foundation.Image\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Card\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.layout.ContentScale\r\nimport androidx.compose.ui.unit.dp\r\nimport coil.compose.rememberImagePainter\r\nimport com.example.kraken.data.model.Pokemon\r\n@Composable\r\nfun PokemonCard(pokemon: Pokemon) {\r\n    Card(\r\n        modifier = Modifier.padding(8.dp)\r\n    ) {\r\n        Column(\r\n            horizontalAlignment = Alignment.CenterHorizontally,\r\n            modifier = Modifier.padding(16.dp)\r\n        ) {\r\n            // Imagen del Pokémon\r\n            Image(\r\n                painter = rememberImagePainter(pokemon.imageUrl),\r\n                contentDescription = pokemon.name,\r\n                modifier = Modifier.height(150.dp),\r\n                contentScale = ContentScale.Crop\r\n            )\r\n            Spacer(modifier = Modifier.height(8.dp))\r\n            // Nombre del Pokémon\r\n            Text(text = pokemon.name)\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt b/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt
+--- a/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt	(revision 7b2e658653922221c4b84db06b9641f24816857b)
++++ b/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt	(date 1740309013747)
+@@ -1,38 +1,52 @@
+ package com.example.kraken.ui.componentes
+ 
+-import androidx.compose.foundation.Image
+-import androidx.compose.foundation.layout.Column
+-import androidx.compose.foundation.layout.Spacer
+-import androidx.compose.foundation.layout.height
+-import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.background
++import androidx.compose.foundation.layout.*
++import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material3.Card
++import androidx.compose.material3.CardDefaults
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.layout.ContentScale
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.dp
+-import coil.compose.rememberImagePainter
++import androidx.compose.ui.unit.sp
++import coil.compose.AsyncImage
+ import com.example.kraken.data.model.Pokemon
++
+ @Composable
+ fun PokemonCard(pokemon: Pokemon) {
+     Card(
+-        modifier = Modifier.padding(8.dp)
++        modifier = Modifier
++            .padding(8.dp)
++            .fillMaxWidth()
++            .background(Color.White),
++        shape = RoundedCornerShape(16.dp),
++        elevation = CardDefaults.cardElevation(4.dp)
+     ) {
+         Column(
+-            horizontalAlignment = Alignment.CenterHorizontally,
+-            modifier = Modifier.padding(16.dp)
++            modifier = Modifier.padding(16.dp),
++            horizontalAlignment = Alignment.CenterHorizontally
+         ) {
+-            // Imagen del Pokémon
+-            Image(
+-                painter = rememberImagePainter(pokemon.imageUrl),
++            // Carga la imagen del Pokémon
++            AsyncImage(
++                model = pokemon.imageUrl, // La URL de la imagen
+                 contentDescription = pokemon.name,
+-                modifier = Modifier.height(150.dp),
+-                contentScale = ContentScale.Crop
++                modifier = Modifier
++                    .size(120.dp)
++                    .background(Color.Gray, shape = RoundedCornerShape(12.dp))
+             )
++
+             Spacer(modifier = Modifier.height(8.dp))
++
+             // Nombre del Pokémon
+-            Text(text = pokemon.name)
++            Text(
++                text = pokemon.name.replaceFirstChar { it.uppercase() },
++                fontSize = 18.sp,
++                fontWeight = FontWeight.Bold
++            )
+         }
+     }
+ }
+Index: app/src/main/java/com/example/kraken/viewmodel/PokemonViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.viewmodel\r\n\r\nimport androidx.lifecycle.LiveData\r\nimport androidx.lifecycle.MutableLiveData\r\nimport androidx.lifecycle.ViewModel\r\nimport androidx.lifecycle.viewModelScope\r\nimport com.example.kraken.data.model.Pokemon\r\nimport com.example.kraken.data.repository.PokemonRepository\r\nimport com.example.kraken.data.remote.RetrofitInstance\r\nimport kotlinx.coroutines.launch\r\n\r\nclass PokemonViewModel : ViewModel() {\r\n    private val repository = PokemonRepository(RetrofitInstance.apiService)\r\n\r\n\r\n    private val _pokemonList = MutableLiveData<List<Pokemon>>(emptyList())\r\n    val pokemonList: LiveData<List<Pokemon>> = _pokemonList\r\n\r\n    fun fetchPokemonList() {\r\n        viewModelScope.launch {\r\n            try {\r\n                val response = repository.getPokemonList(limit = 20, offset = 0)\r\n                _pokemonList.value = response.results\r\n            } catch (e: Exception) {\r\n                e.printStackTrace()\r\n            }\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/viewmodel/PokemonViewModel.kt b/app/src/main/java/com/example/kraken/viewmodel/PokemonViewModel.kt
+--- a/app/src/main/java/com/example/kraken/viewmodel/PokemonViewModel.kt	(revision 7b2e658653922221c4b84db06b9641f24816857b)
++++ b/app/src/main/java/com/example/kraken/viewmodel/PokemonViewModel.kt	(date 1740309013743)
+@@ -6,7 +6,7 @@
+ import androidx.lifecycle.viewModelScope
+ import com.example.kraken.data.model.Pokemon
+ import com.example.kraken.data.repository.PokemonRepository
+-import com.example.kraken.data.remote.RetrofitInstance
++import com.example.kraken.data.remote.RetrofitInstance // Asegúrate de importar RetrofitInstance
+ import kotlinx.coroutines.launch
+ 
+ class PokemonViewModel : ViewModel() {
+@@ -16,6 +16,7 @@
+     private val _pokemonList = MutableLiveData<List<Pokemon>>(emptyList())
+     val pokemonList: LiveData<List<Pokemon>> = _pokemonList
+ 
++
+     fun fetchPokemonList() {
+         viewModelScope.launch {
+             try {
