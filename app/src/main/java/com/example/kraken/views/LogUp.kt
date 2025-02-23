@@ -42,7 +42,8 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
     var password2 by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("")}
-    val emailPattern = "^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.es|outlook\\.com)$".toRegex()
+    val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$".toRegex()
+
 
         Column(
         modifier = Modifier
@@ -81,7 +82,8 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
             CustomTextField(
                 text = "Contraseña:",
                 value = password,
-                onValueChange = { password = it }
+                onValueChange = { password = it },
+                isPassword = true
             )
         }
 
@@ -92,7 +94,8 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
             CustomTextField(
                 text = "Repita la contraseña:",
                 value = password2,
-                onValueChange = { password2 = it }
+                onValueChange = { password2 = it },
+                isPassword = true
             )
         }
 
@@ -131,7 +134,7 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
                             errorMessage = "Las contraseñas no coinciden."
                         } else if (email.isBlank() || !email.matches(emailPattern)) {
 
-                            errorMessage = " Correo invalido \n pruebe a usar una de estas extensiones \n (@gmail.com, @yahoo.es, @outlook.com)."
+                            errorMessage = "Correo invalido, reviselo"
                         }
                         else {
                             errorMessage = ""
