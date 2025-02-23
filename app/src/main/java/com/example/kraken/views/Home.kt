@@ -22,17 +22,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.kraken.data.model.Pokemon
-
+import com.example.kraken.ui.componentes.PokemonCard
 import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.FondoTopBar
 import com.example.kraken.ui.theme.Texto
-
+import com.example.kraken.viewmodel.PokemonViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () -> Unit) {
+fun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () -> Unit, viewModel: PokemonViewModel) {
 
+
+    val pokemonList by viewModel.pokemonList.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchPokemonList()
+    }
 
     Scaffold(
         topBar = { TopBar(onLogoutClick = {
@@ -41,7 +47,7 @@ fun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () ->
             navigateToLogin()
         }) }
     ) { paddingValues ->
-        Content(paddingValues)
+        Content(paddingValues, pokemonList)
     }
 }
 
@@ -65,8 +71,10 @@ fun TopBar(onLogoutClick: () -> Unit) {
 
 
 @Composable
-fun Content(paddingValues: PaddingValues) {
+fun Content(paddingValues: PaddingValues, pokemonList: List<Pokemon>) {
     LazyColumn(modifier = Modifier.padding(paddingValues).fillMaxSize().background(Fondo)) {
-
+        items(pokemonList) { pokemon ->
+            PokemonCard(pokemon)
+        }
     }
 }

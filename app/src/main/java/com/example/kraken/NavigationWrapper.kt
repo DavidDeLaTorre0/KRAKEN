@@ -38,7 +38,8 @@ fun NavigationWrapper(
             HomeScreen(
                 db,
                 auth,
-                navigateToLogin = { navHostController.navigate("logIn") }
+                navigateToLogin = { navHostController.navigate("logIn") },
+                //viewModel = TODO()
             )
         }
     }
