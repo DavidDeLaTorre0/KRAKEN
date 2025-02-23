@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.kraken.views.HomeScreen
 import com.example.kraken.views.LogUpScreen
 import com.example.kraken.views.LoginScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -17,22 +18,26 @@ fun NavigationWrapper(
     db: FirebaseFirestore
 ) {
 
-    NavHost(navController = navHostController, startDestination ="logIn"){
-        composable ("logIn"){
+    NavHost(navController = navHostController, startDestination = "logIn") {
+        composable("logIn") {
             LoginScreen(
                 auth,
-                navigateToHome = {navHostController.navigate("home")},
-                navigateToLogUp = {navHostController.navigate("logUp")}
+                navigateToHome = { navHostController.navigate("home") },
+                navigateToLogUp = { navHostController.navigate("logUp") }
             )
         }
-        composable ("logUp"){
+        composable("logUp") {
             LogUpScreen(
                 auth,
-                navigateToLogin = {navHostController.navigate("logIn")}
+                navigateToLogin = { navHostController.navigate("logIn") }
             )
         }
-//        composable("home") {
-//            HomeScreen(db)
-//        }
+        composable("home") {
+            HomeScreen(
+                db,
+                auth,
+                navigateToLogin = { navHostController.navigate("logIn") }
+            )
+        }
     }
 }
