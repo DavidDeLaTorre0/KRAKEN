@@ -34,6 +34,7 @@ fun NavigationWrapper(
         composable("logUp") {
             LogUpScreen(
                 auth,
+                db,
                 navigateToLogin = { navHostController.navigate("logIn") }
             )
         }

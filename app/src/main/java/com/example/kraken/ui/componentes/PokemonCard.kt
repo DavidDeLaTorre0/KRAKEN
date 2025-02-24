@@ -15,19 +15,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.kraken.data.model.Pokemon
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+
 
 @Composable
 fun PokemonCard(pokemon: Pokemon) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth()
+            .wrapContentSize() // La card se ajusta al contenido
             .background(Color.White),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .wrapContentSize(), // La columna solo ocupará el espacio necesario
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Carga la imagen del Pokémon
@@ -50,3 +56,4 @@ fun PokemonCard(pokemon: Pokemon) {
         }
     }
 }
+

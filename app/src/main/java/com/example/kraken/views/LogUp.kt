@@ -1,8 +1,9 @@
 package com.example.kraken.views
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,11 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,15 +26,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kraken.ui.componentes.CustomTextField
-import com.example.kraken.ui.theme.BorderInput
 import com.example.kraken.ui.theme.Boton
-import com.example.kraken.ui.theme.Input
 import com.example.kraken.ui.theme.Texto
+import com.google.android.play.core.integrity.bd
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
+fun LogUpScreen(auth: FirebaseAuth, db:FirebaseFirestore, navigateToLogin: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
@@ -45,12 +44,12 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
     val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$".toRegex()
 
 
-        Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 80.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 80.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Logo o título "KRAKEN"
         Row(
@@ -142,6 +141,25 @@ fun LogUpScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit) {
                             auth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
+                                        val user = FirebaseAuth.getInstance().currentUser;
+
+                                        val userMap = hashMapOf(
+                                            "nombre" to username,
+                                            "email" to email
+                                        )
+
+                                        if (user != null) {
+                                            db.collection("usuarios")
+                                                .document(user.uid)
+                                                .set(userMap).addOnCompleteListener{
+                                                    Log.i("CUsuario", "Success")
+                                                }.addOnFailureListener{
+                                                    Log.i("CUsuario", "Failure")
+                                                }        .addOnCompleteListener{
+                                                    Log.i("CUsuario", "Complete")
+                                                }
+                                        }
+
                                         Log.i("REGIS", "Registro OK")
                                         navigateToLogin()
                                     } else {
