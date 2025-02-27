@@ -82,7 +82,7 @@ fun LogUpScreen(auth: FirebaseAuth, db:FirebaseFirestore, navigateToLogin: () ->
                 text = "Contraseña:",
                 value = password,
                 onValueChange = { password = it },
-                isPassword = true
+                isPassword = true,
             )
         }
 
@@ -173,6 +173,15 @@ fun LogUpScreen(auth: FirebaseAuth, db:FirebaseFirestore, navigateToLogin: () ->
                     modifier = Modifier.width(270.dp)
                 ) {
                     Text("Registrarse", fontSize = 14.sp)
+                }
+
+
+                Button(
+                    onClick = { navigateToLogin() },
+                    colors = ButtonDefaults.buttonColors(containerColor = Boton),
+                    modifier = Modifier.width(270.dp)
+                ) {
+                    Text("Volver", fontSize = 14.sp)
                 }
             }
         }
