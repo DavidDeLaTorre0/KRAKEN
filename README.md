@@ -3,7 +3,7 @@
   Para este pequeño proyecto trabajaremos: [Erik](https://github.com/MeLLamoTawet) y [David](https://github.com/DavidDeLaTorre0).
 
 ## CONTRIBUCION
-  ERIK - VISTAS LOGIN, LOGUP, HOME.
+  ERIK - VISTAS LOGIN, LOGUP, HOME.    
   DAVID - LOGICAS DE LAS ANTERIORES Y CONSUMICION API, NAVIGATION WRAPPER, MVVM.
 ## Versiones
 Trabajaremos con las siguiente version: 
