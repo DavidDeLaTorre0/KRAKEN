@@ -136,37 +136,42 @@ fun LogUpScreen(auth: FirebaseAuth, db:FirebaseFirestore, navigateToLogin: () ->
                             errorMessage = "Correo invalido, reviselo"
                         }
                         else {
-                            errorMessage = ""
-                            // Intentar crear el usuario
-                            auth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        val user = FirebaseAuth.getInstance().currentUser;
+                                if(username.isBlank() || password.isBlank()){
+                                    errorMessage = "No puedes dejar campos vacios"
+                                }else{
+                                    errorMessage = ""
+                                    // Intentar crear el usuario
+                                    auth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                val user = FirebaseAuth.getInstance().currentUser;
 
-                                        val userMap = hashMapOf(
-                                            "nombre" to username,
-                                            "email" to email
-                                        )
+                                                val userMap = hashMapOf(
+                                                    "nombre" to username,
+                                                    "email" to email
+                                                )
 
-                                        if (user != null) {
-                                            db.collection("usuarios")
-                                                .document(user.uid)
-                                                .set(userMap).addOnCompleteListener{
-                                                    Log.i("CUsuario", "Success")
-                                                }.addOnFailureListener{
-                                                    Log.i("CUsuario", "Failure")
-                                                }        .addOnCompleteListener{
-                                                    Log.i("CUsuario", "Complete")
+                                                if (user != null) {
+                                                    db.collection("usuarios")
+                                                        .document(user.uid)
+                                                        .set(userMap).addOnCompleteListener{
+                                                            Log.i("CUsuario", "Success")
+                                                        }.addOnFailureListener{
+                                                            Log.i("CUsuario", "Failure")
+                                                        }        .addOnCompleteListener{
+                                                            Log.i("CUsuario", "Complete")
+                                                        }
                                                 }
-                                        }
 
-                                        Log.i("REGIS", "Registro OK")
-                                        navigateToLogin()
-                                    } else {
-                                        Log.i("REGIS", "Registro KO")
-                                        errorMessage = "El correo ya esta asociado a otra cuenta"
-                                    }
+                                                Log.i("REGIS", "Registro OK")
+                                                navigateToLogin()
+                                            } else {
+                                                Log.i("REGIS", "Registro KO")
+                                                errorMessage = "El correo ya esta asociado a otra cuenta"
+                                            }
+                                        }
                                 }
+
                         }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
