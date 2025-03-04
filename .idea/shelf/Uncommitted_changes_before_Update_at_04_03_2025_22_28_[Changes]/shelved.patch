@@ -1,0 +1,405 @@
+Index: app/src/main/java/com/example/kraken/views/LogUp.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.views\r\n\r\nimport android.annotation.SuppressLint\r\nimport android.util.Log\r\nimport androidx.compose.foundation.layout.Arrangement\r\n\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Row\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.width\r\nimport androidx.compose.foundation.lazy.LazyColumn\r\nimport androidx.compose.material3.Button\r\nimport androidx.compose.material3.ButtonDefaults\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.mutableStateOf\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.runtime.setValue\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.example.kraken.ui.componentes.CustomTextField\r\nimport com.example.kraken.ui.theme.Boton\r\nimport com.example.kraken.ui.theme.Texto\r\nimport com.google.android.play.core.integrity.bd\r\nimport com.google.firebase.auth.FirebaseAuth\r\nimport com.google.firebase.firestore.FirebaseFirestore\r\n\r\n\r\n@SuppressLint(\"SuspiciousIndentation\")\r\n@Composable\r\nfun LogUpScreen(auth: FirebaseAuth, db:FirebaseFirestore, navigateToLogin: () -> Unit) {\r\n    var username by remember { mutableStateOf(\"\") }\r\n    var password by remember { mutableStateOf(\"\") }\r\n    var password2 by remember { mutableStateOf(\"\") }\r\n    var email by remember { mutableStateOf(\"\") }\r\n    var errorMessage by remember { mutableStateOf(\"\")}\r\n    val emailPattern = \"^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$\".toRegex()\r\n\r\n\r\n    LazyColumn(\r\n    modifier = Modifier\r\n        .fillMaxSize()\r\n        .padding(top = 80.dp),\r\n    verticalArrangement = Arrangement.spacedBy(16.dp),\r\n    horizontalAlignment = Alignment.CenterHorizontally\r\n    ) {\r\n\r\n        item {\r\n            // Logo o título \"KRAKEN\"\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                Text(\"KRAKEN\", fontSize = 80.sp, color = Texto)\r\n            }\r\n        }\r\n        item {\r\n            Spacer(modifier = Modifier.height(50.dp))\r\n        }\r\n        item {\r\n            // Campo de usuario\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                CustomTextField(\r\n                    text = \"Nombre usuario:\",\r\n                    value = username,\r\n                    onValueChange = { username = it }\r\n                )\r\n            }\r\n        }\r\n        item {\r\n            // Campo de contraseña\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                CustomTextField(\r\n                    text = \"Contraseña:\",\r\n                    value = password,\r\n                    onValueChange = { password = it },\r\n                    isPassword = true,\r\n                )\r\n            }\r\n        }\r\n        item {\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                CustomTextField(\r\n                    text = \"Repita la contraseña:\",\r\n                    value = password2,\r\n                    onValueChange = { password2 = it },\r\n                    isPassword = true\r\n                )\r\n            }\r\n        }\r\n        item {\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                CustomTextField(\r\n                    text = \"Correo:\",\r\n                    value = email,\r\n                    onValueChange = { email = it }\r\n                )\r\n            }\r\n        }\r\n        // Mostrar mensaje de error si es necesario\r\n        if (errorMessage.isNotEmpty()) {\r\n            item {\r\n                Text(\r\n                    text = errorMessage,\r\n                    color = Color.Red,\r\n                    fontSize = 14.sp\r\n                )\r\n            }\r\n        }\r\n        // Botones\r\n        item {\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                Column(\r\n                    modifier = Modifier.padding(8.dp)\r\n                ) {\r\n                    Button(\r\n                        onClick = {\r\n\r\n                            //Validaciones\r\n\r\n                            if (password != password2) {\r\n                                errorMessage = \"Las contraseñas no coinciden.\"\r\n                            } else if (email.isBlank() || !email.matches(emailPattern)) {\r\n\r\n                                errorMessage = \"Correo invalido, reviselo\"\r\n                            } else {\r\n                                if (username.isBlank() || password.isBlank()) {\r\n                                    errorMessage = \"No puedes dejar campos vacios\"\r\n                                } else {\r\n                                    errorMessage = \"\"\r\n                                    // Intentar crear el usuario\r\n                                    auth.createUserWithEmailAndPassword(email, password)\r\n                                        .addOnCompleteListener { task ->\r\n                                            if (task.isSuccessful) {\r\n                                                val user = FirebaseAuth.getInstance().currentUser;\r\n\r\n                                                val userMap = hashMapOf(\r\n                                                    \"nombre\" to username,\r\n                                                    \"email\" to email\r\n                                                )\r\n\r\n                                                if (user != null) {\r\n                                                    db.collection(\"usuarios\")\r\n                                                        .document(user.uid)\r\n                                                        .set(userMap).addOnCompleteListener {\r\n                                                            Log.i(\"CUsuario\", \"Success\")\r\n                                                        }.addOnFailureListener {\r\n                                                            Log.i(\"CUsuario\", \"Failure\")\r\n                                                        }.addOnCompleteListener {\r\n                                                            Log.i(\"CUsuario\", \"Complete\")\r\n                                                        }\r\n                                                }\r\n\r\n                                                Log.i(\"REGIS\", \"Registro OK\")\r\n                                                navigateToLogin()\r\n                                            } else {\r\n                                                Log.i(\"REGIS\", \"Registro KO\")\r\n                                                errorMessage =\r\n                                                    \"El correo ya esta asociado a otra cuenta\"\r\n                                            }\r\n                                        }\r\n                                }\r\n\r\n                            }\r\n                        },\r\n                        colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                        modifier = Modifier.width(270.dp)\r\n                    ) {\r\n                        Text(\"Registrarse\", fontSize = 14.sp)\r\n                    }\r\n\r\n\r\n                    Button(\r\n                        onClick = { navigateToLogin() },\r\n                        colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                        modifier = Modifier.width(270.dp)\r\n                    ) {\r\n                        Text(\"Volver\", fontSize = 14.sp)\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/views/LogUp.kt b/app/src/main/java/com/example/kraken/views/LogUp.kt
+--- a/app/src/main/java/com/example/kraken/views/LogUp.kt	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ b/app/src/main/java/com/example/kraken/views/LogUp.kt	(date 1741123092984)
+@@ -29,7 +29,6 @@
+ import com.example.kraken.ui.componentes.CustomTextField
+ import com.example.kraken.ui.theme.Boton
+ import com.example.kraken.ui.theme.Texto
+-import com.google.android.play.core.integrity.bd
+ import com.google.firebase.auth.FirebaseAuth
+ import com.google.firebase.firestore.FirebaseFirestore
+ 
+Index: app/src/main/java/com/example/kraken/views/Home.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.views\r\n\r\nimport android.util.Log\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.PaddingValues\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.lazy.LazyColumn\r\nimport androidx.compose.foundation.lazy.grid.GridCells\r\nimport androidx.compose.foundation.lazy.grid.LazyVerticalGrid\r\nimport androidx.compose.foundation.lazy.grid.items\r\nimport androidx.compose.foundation.lazy.items\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.automirrored.filled.ExitToApp\r\nimport androidx.compose.material3.CenterAlignedTopAppBar\r\nimport androidx.compose.material3.ExperimentalMaterial3Api\r\nimport androidx.compose.material3.Icon\r\nimport androidx.compose.material3.IconButton\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.material3.TopAppBarDefaults\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.LaunchedEffect\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.livedata.observeAsState\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.unit.dp\r\nimport com.example.kraken.data.model.Pokemon\r\nimport com.example.kraken.ui.componentes.PokemonCard\r\nimport com.example.kraken.ui.theme.Fondo\r\nimport com.example.kraken.ui.theme.FondoTopBar\r\nimport com.example.kraken.ui.theme.Texto\r\nimport com.example.kraken.viewmodel.PokemonViewModel\r\nimport com.google.firebase.auth.FirebaseAuth\r\nimport com.google.firebase.firestore.FirebaseFirestore\r\n\r\n@Composable\r\nfun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () -> Unit, viewModel: PokemonViewModel) {\r\n\r\n\r\n    val pokemonList by viewModel.pokemonList.observeAsState(emptyList())\r\n\r\n\r\n    LaunchedEffect(Unit) {\r\n        viewModel.fetchPokemonList()\r\n    }\r\n\r\n    Scaffold(\r\n        topBar = { TopBar(onLogoutClick = {\r\n            auth.signOut()\r\n            Log.i(\"HOME\", \"Estoy saliendo\")\r\n            navigateToLogin()\r\n        }) }\r\n    ) { paddingValues ->\r\n\r\n        Content(paddingValues, pokemonList)\r\n    }\r\n}\r\n\r\n@OptIn(ExperimentalMaterial3Api::class)\r\n@Composable\r\nfun TopBar(onLogoutClick: () -> Unit) {\r\n    CenterAlignedTopAppBar(\r\n        title = { Text(text = \"Hola, Username\", color = Texto) },\r\n        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = FondoTopBar),\r\n        actions = {\r\n            IconButton(onClick = onLogoutClick) {\r\n                Icon(\r\n                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,\r\n                    contentDescription = \"Cerrar sesión\",\r\n                    tint = Texto\r\n                )\r\n            }\r\n        }\r\n    )\r\n}\r\n@Composable\r\nfun Content(paddingValues: PaddingValues, pokemonList: List<Pokemon>) {\r\n    LazyVerticalGrid(\r\n        columns = GridCells.Fixed(2), // 3 columnas\r\n        modifier = Modifier\r\n            .padding(paddingValues)\r\n            .fillMaxSize()\r\n            .background(Fondo),\r\n        contentPadding = PaddingValues(8.dp)\r\n    ) {\r\n        items(pokemonList) { pokemon ->\r\n            PokemonCard(pokemon)\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/views/Home.kt b/app/src/main/java/com/example/kraken/views/Home.kt
+--- a/app/src/main/java/com/example/kraken/views/Home.kt	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ b/app/src/main/java/com/example/kraken/views/Home.kt	(date 1741123702065)
+@@ -40,7 +40,6 @@
+ 
+     val pokemonList by viewModel.pokemonList.observeAsState(emptyList())
+ 
+-
+     LaunchedEffect(Unit) {
+         viewModel.fetchPokemonList()
+     }
+Index: app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.ui.componentes\r\n\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material3.Card\r\nimport androidx.compose.material3.CardDefaults\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.text.font.FontWeight\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport coil.compose.AsyncImage\r\nimport com.example.kraken.data.model.Pokemon\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.lazy.grid.GridCells\r\nimport androidx.compose.foundation.lazy.grid.LazyVerticalGrid\r\n\r\n\r\n@Composable\r\nfun PokemonCard(pokemon: Pokemon) {\r\n    Card(\r\n        modifier = Modifier\r\n            .padding(8.dp)\r\n            .wrapContentSize() // La card se ajusta al contenido\r\n            .background(Color.White),\r\n        shape = RoundedCornerShape(16.dp),\r\n        elevation = CardDefaults.cardElevation(4.dp)\r\n    ) {\r\n        Column(\r\n            modifier = Modifier\r\n                .padding(16.dp)\r\n                .wrapContentSize(), // La columna solo ocupará el espacio necesario\r\n            horizontalAlignment = Alignment.CenterHorizontally\r\n        ) {\r\n            // Carga la imagen del Pokémon\r\n            AsyncImage(\r\n                model = pokemon.imageUrl,\r\n                contentDescription = pokemon.name,\r\n                modifier = Modifier\r\n                    .size(120.dp)\r\n                    .background(Color.Gray, shape = RoundedCornerShape(12.dp))\r\n            )\r\n\r\n            Spacer(modifier = Modifier.height(8.dp))\r\n\r\n            // Nombre del Pokémon\r\n            Text(\r\n                text = pokemon.name.replaceFirstChar { it.uppercase() },\r\n                fontSize = 18.sp,\r\n                fontWeight = FontWeight.Bold\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt b/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt
+--- a/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ b/app/src/main/java/com/example/kraken/ui/componentes/PokemonCard.kt	(date 1741123452806)
+@@ -1,5 +1,6 @@
+ package com.example.kraken.ui.componentes
+ 
++import com.example.kraken.R
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.shape.RoundedCornerShape
+@@ -15,9 +16,7 @@
+ import androidx.compose.ui.unit.sp
+ import coil.compose.AsyncImage
+ import com.example.kraken.data.model.Pokemon
+-import androidx.compose.foundation.layout.*
+-import androidx.compose.foundation.lazy.grid.GridCells
+-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
++import androidx.compose.ui.res.painterResource
+ 
+ 
+ @Composable
+@@ -36,13 +35,16 @@
+                 .wrapContentSize(), // La columna solo ocupará el espacio necesario
+             horizontalAlignment = Alignment.CenterHorizontally
+         ) {
+-            // Carga la imagen del Pokémon
++            // Carga la imagen del Pokémon con coil
++            //Mientras la foto carga, aparecera la nube, y si da error saldra la img de error
+             AsyncImage(
+                 model = pokemon.imageUrl,
+                 contentDescription = pokemon.name,
+                 modifier = Modifier
+                     .size(120.dp)
+-                    .background(Color.Gray, shape = RoundedCornerShape(12.dp))
++                    .background(Color.Gray, shape = RoundedCornerShape(12.dp)),
++                placeholder = painterResource(id = R.drawable.placeholder),
++                error = painterResource(id = R.drawable.error_image)
+             )
+ 
+             Spacer(modifier = Modifier.height(8.dp))
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52__Changes_1.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52__Changes_1.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52__Changes_1.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52__Changes_1.xml	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_23_02_2025_0_52_[Changes]1" date="1740268352340" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52_[Changes]1/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 23/02/2025 0:52 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33__Changes_.xml	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_23_02_2025_12_33_[Changes]" date="1740310424918" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 23/02/2025 12:33 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11__Changes_.xml	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_23_02_2025_12_11_[Changes]" date="1740309121523" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 23/02/2025 12:11 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10_[Changes]1/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10_[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10_[Changes]1/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10_[Changes]1/shelved.patch	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,24 +0,0 @@
+-Index: .idea/deploymentTargetSelector.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+-deleted file mode 100644
+---- a/.idea/deploymentTargetSelector.xml	(revision 7b2e658653922221c4b84db06b9641f24816857b)
+-+++ /dev/null	(revision 7b2e658653922221c4b84db06b9641f24816857b)
+-@@ -1,13 +0,0 @@
+--<?xml version="1.0" encoding="UTF-8"?>
+--<project version="4">
+--  <component name="deploymentTargetSelector">
+--    <selectionStates>
+--      <SelectionState runConfigName="MainActivity">
+--        <option name="selectionMode" value="DROPDOWN" />
+--      </SelectionState>
+--      <SelectionState runConfigName="MainActivity (1)">
+--        <option name="selectionMode" value="DROPDOWN" />
+--      </SelectionState>
+--    </selectionStates>
+--  </component>
+--</project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12__Changes_.xml	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_23_02_2025_12_12_[Changes]" date="1740309172168" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 23/02/2025 12:12 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52_[Changes]1/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52_[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52_[Changes]1/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_0_52_[Changes]1/shelved.patch	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,50 +0,0 @@
+-Index: app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt b/app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt
+-new file mode 100644
+---- /dev/null	(date 1740268041096)
+-+++ b/app/src/main/java/com/example/kraken/viewmodel/NavigationWrapper.kt	(date 1740268041096)
+-@@ -0,0 +1,39 @@
+-+package com.example.kraken.viewmodel
+-+
+-+
+-+import androidx.compose.runtime.Composable
+-+import androidx.navigation.NavHostController
+-+import androidx.navigation.compose.NavHost
+-+import androidx.navigation.compose.composable
+-+import com.example.kraken.views.LogUpScreen
+-+import com.example.kraken.views.LoginScreen
+-+import com.google.firebase.auth.FirebaseAuth
+-+import com.google.firebase.firestore.FirebaseFirestore
+-+
+-+
+-+@Composable
+-+fun NavigationWrapper(
+-+    navHostController: NavHostController,
+-+    auth: FirebaseAuth,
+-+    db: FirebaseFirestore
+-+) {
+-+
+-+    NavHost(navController = navHostController, startDestination ="logIn"){
+-+        composable ("logIn"){
+-+            LoginScreen(
+-+                auth,
+-+                navigateToLogup = {navHostController.navigate("logUp")},
+-+                navigateToHome = {navHostController.navigate("home")}
+-+            )
+-+        }
+-+        composable ("logUp"){
+-+            LogUpScreen(
+-+                auth,
+-+                navigateToLogIn = {navHostController.navigate("logIn")}
+-+            )
+-+        }
+-+//        composable("home") {
+-+//           HomeScreen()
+-+//        }
+-+    }
+-+}
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10__Changes_1.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10__Changes_1.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10__Changes_1.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10__Changes_1.xml	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_23_02_2025_12_10_[Changes]1" date="1740309032235" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_10_[Changes]1/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 23/02/2025 12:10 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_11_[Changes]/shelved.patch	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,22 +0,0 @@
+-Index: .idea/deploymentTargetSelector.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetSelector\">\r\n    <selectionStates>\r\n      <SelectionState runConfigName=\"app\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n    </selectionStates>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+---- a/.idea/deploymentTargetSelector.xml	(revision dfc034fef9bc7e71c5a747c9e83840194dcabddc)
+-+++ b/.idea/deploymentTargetSelector.xml	(date 1740309032212)
+-@@ -1,10 +1,0 @@
+--<?xml version="1.0" encoding="UTF-8"?>
+--<project version="4">
+--  <component name="deploymentTargetSelector">
+--    <selectionStates>
+--      <SelectionState runConfigName="app">
+--        <option name="selectionMode" value="DROPDOWN" />
+--      </SelectionState>
+--    </selectionStates>
+--  </component>
+--</project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_23_02_2025_12_33_[Changes]/shelved.patch	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,39 +0,0 @@
+-Index: app/src/main/java/com/example/kraken/MainActivity.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.kraken\r\n\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.navigation.NavHostController\r\nimport androidx.navigation.compose.rememberNavController\r\nimport com.example.kraken.ui.theme.Fondo\r\nimport com.example.kraken.ui.theme.KRAKENTheme\r\nimport com.example.kraken.viewmodel.PokemonViewModel\r\nimport com.google.firebase.Firebase\r\nimport com.google.firebase.auth.FirebaseAuth\r\nimport com.google.firebase.auth.auth\r\nimport com.google.firebase.firestore.FirebaseFirestore\r\nimport com.google.firebase.firestore.firestore\r\n\r\nclass MainActivity : ComponentActivity() {\r\n\r\n    private lateinit var navHostController: NavHostController\r\n    private lateinit var auth: FirebaseAuth\r\n    private lateinit var db: FirebaseFirestore\r\n\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        auth = Firebase.auth\r\n        db = Firebase.firestore\r\n        enableEdgeToEdge()\r\n        setContent {\r\n            navHostController = rememberNavController()\r\n            KRAKENTheme {\r\n                Scaffold(\r\n                    modifier = Modifier.fillMaxSize(),\r\n                    containerColor = Fondo\r\n                ) { paddingValues ->\r\n\r\n                    NavigationWrapper(\r\n                        navHostController,\r\n                        auth,\r\n                        db,\r\n                        modifier = Modifier.padding(paddingValues)\r\n                    )\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    //Para evitar seguir loggeado cuandon vuelves a iniciar la app\r\n    override fun onStart() {\r\n        super.onStart()\r\n        val currentUser = auth.currentUser\r\n\r\n        if (currentUser != null) {\r\n            Log.i(\"LOG\", \"Estoy logado\")\r\n            auth.signOut()\r\n            Log.i(\"LOG\", \"Estoy deslogado\")\r\n        }\r\n    }\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/kraken/MainActivity.kt b/app/src/main/java/com/example/kraken/MainActivity.kt
+---- a/app/src/main/java/com/example/kraken/MainActivity.kt	(revision 97e4917ec6cc7f31107071a4e0b9c796991a0843)
+-+++ b/app/src/main/java/com/example/kraken/MainActivity.kt	(date 1740309301669)
+-@@ -13,7 +13,6 @@
+- import androidx.navigation.compose.rememberNavController
+- import com.example.kraken.ui.theme.Fondo
+- import com.example.kraken.ui.theme.KRAKENTheme
+--import com.example.kraken.viewmodel.PokemonViewModel
+- import com.google.firebase.Firebase
+- import com.google.firebase.auth.FirebaseAuth
+- import com.google.firebase.auth.auth
+-Index: .idea/deploymentTargetSelector.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetSelector\">\r\n    <selectionStates>\r\n      <SelectionState runConfigName=\"MainActivity\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n      <SelectionState runConfigName=\"MainActivity (1)\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n    </selectionStates>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+---- a/.idea/deploymentTargetSelector.xml	(revision 7b2e658653922221c4b84db06b9641f24816857b)
+-+++ b/.idea/deploymentTargetSelector.xml	(date 1740309710194)
+-@@ -5,9 +5,6 @@
+-       <SelectionState runConfigName="MainActivity">
+-         <option name="selectionMode" value="DROPDOWN" />
+-       </SelectionState>
+--      <SelectionState runConfigName="MainActivity (1)">
+--        <option name="selectionMode" value="DROPDOWN" />
+--      </SelectionState>
+-     </selectionStates>
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_02_2025_12_12_[Changes]/shelved.patch	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ /dev/null	(revision e824df4d40496082ee68a02367057c4edb9cd309)
+@@ -1,22 +0,0 @@
+-Index: .idea/deploymentTargetSelector.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetSelector\">\r\n    <selectionStates>\r\n      <SelectionState runConfigName=\"MainActivity\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n      <SelectionState runConfigName=\"MainActivity (1)\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n    </selectionStates>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+---- a/.idea/deploymentTargetSelector.xml	(revision 7b2e658653922221c4b84db06b9641f24816857b)
+-+++ b/.idea/deploymentTargetSelector.xml	(date 1740309115555)
+-@@ -2,10 +2,7 @@
+- <project version="4">
+-   <component name="deploymentTargetSelector">
+-     <selectionStates>
+--      <SelectionState runConfigName="MainActivity">
+--        <option name="selectionMode" value="DROPDOWN" />
+--      </SelectionState>
+--      <SelectionState runConfigName="MainActivity (1)">
+-+      <SelectionState runConfigName="app">
+-         <option name="selectionMode" value="DROPDOWN" />
+-       </SelectionState>
+-     </selectionStates>
+Index: .idea/deploymentTargetSelector.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetSelector\">\r\n    <selectionStates>\r\n      <SelectionState runConfigName=\"app\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n      <SelectionState runConfigName=\"MainActivity\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n      <SelectionState runConfigName=\"MainActivity (1)\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n      <SelectionState runConfigName=\"MainActivity (2)\">\r\n        <option name=\"selectionMode\" value=\"DROPDOWN\" />\r\n      </SelectionState>\r\n    </selectionStates>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+--- a/.idea/deploymentTargetSelector.xml	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ b/.idea/deploymentTargetSelector.xml	(date 1741052328935)
+@@ -14,6 +14,9 @@
+       <SelectionState runConfigName="MainActivity (2)">
+         <option name="selectionMode" value="DROPDOWN" />
+       </SelectionState>
++      <SelectionState runConfigName="MainActivity (3)">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
+     </selectionStates>
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/kraken/views/Login.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.views\r\n\r\nimport android.util.Log\r\nimport androidx.compose.foundation.layout.Arrangement\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Row\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.width\r\nimport androidx.compose.foundation.lazy.LazyColumn\r\nimport androidx.compose.material3.Button\r\nimport androidx.compose.material3.ButtonDefaults\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.mutableStateOf\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.runtime.setValue\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.example.kraken.ui.componentes.CustomTextField\r\nimport com.example.kraken.ui.theme.Boton\r\nimport com.example.kraken.ui.theme.Texto\r\nimport com.google.firebase.auth.FirebaseAuth\r\n\r\n\r\n@Composable\r\nfun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp: () -> Unit) {\r\n    var email by remember { mutableStateOf(\"\") }\r\n    var password by remember { mutableStateOf(\"\") }\r\n    var errorMessage by remember { mutableStateOf(\"\") }\r\n\r\n    LazyColumn(\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .padding(top = 80.dp),\r\n        verticalArrangement = Arrangement.spacedBy(16.dp),\r\n        horizontalAlignment = Alignment.CenterHorizontally\r\n    ) {\r\n\r\n        item {\r\n            // Logo o título \"KRAKEN\"\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                Text(\"KRAKEN\", fontSize = 80.sp, color = Texto)\r\n            }\r\n        }\r\n        item {\r\n            Spacer(modifier = Modifier.height(50.dp))\r\n        }\r\n        item {\r\n            // Campo de usuario\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                CustomTextField(\r\n                    text = \"Nombre usuario:\",\r\n                    value = email,\r\n                    onValueChange = { email = it }\r\n                )\r\n            }\r\n        }\r\n        item {\r\n            // Campo de contraseña\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                CustomTextField(\r\n                    text = \"Contraseña:\",\r\n                    value = password,\r\n                    onValueChange = { password = it },\r\n                    isPassword = true\r\n                )\r\n            }\r\n        }\r\n        // Mensaje de error\r\n        if (errorMessage.isNotEmpty()) {\r\n            item {\r\n                Text(\r\n                    text = errorMessage,\r\n                    color = Color.Red,\r\n                    fontSize = 14.sp,\r\n                    modifier = Modifier.padding(top = 4.dp)\r\n                )\r\n            }\r\n        }\r\n        item {\r\n            // Botones\r\n            Row(\r\n                modifier = Modifier.fillMaxWidth(),\r\n                horizontalArrangement = Arrangement.Center\r\n            ) {\r\n                Column(\r\n                    modifier = Modifier.padding(8.dp)\r\n                ) {\r\n                    Button(\r\n                        onClick = {\r\n                            if (email.isBlank() || password.isBlank()) {\r\n                                errorMessage = \"Email o contraseña no pueden estar vacíos\"\r\n                                //stringResource(R.string.error_login_failed)\r\n                                //LocalContext.current.getString(R.string.error_login_failed)\r\n                            } else {\r\n                                errorMessage = \"\"\r\n                                auth.signInWithEmailAndPassword(email, password)\r\n                                    .addOnCompleteListener { task ->\r\n\r\n                                        if (task.isSuccessful) {\r\n                                            //Navegar\r\n\r\n                                            Log.i(\"LOGIN\", \"LOGIN OK\")\r\n                                            navigateToHome()\r\n\r\n                                        } else {\r\n                                            //Error\r\n                                            Log.i(\"LOGIN\", \"LOGIN KO\")\r\n                                            errorMessage = \"Error al iniciar sesión\"\r\n                                        }\r\n                                    }\r\n                            }\r\n                        },\r\n                        colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                        modifier = Modifier.width(125.dp)\r\n                    ) {\r\n                        Text(\"Entrar\", fontSize = 14.sp)\r\n                    }\r\n                }\r\n\r\n                Column(\r\n                    modifier = Modifier.padding(8.dp)\r\n                ) {\r\n                    Button(\r\n                        onClick = {\r\n                            navigateToLogUp()\r\n                        },\r\n                        colors = ButtonDefaults.buttonColors(containerColor = Boton),\r\n                        modifier = Modifier.width(125.dp)\r\n                    ) {\r\n                        Text(\"Registrarse\", fontSize = 14.sp)\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/views/Login.kt b/app/src/main/java/com/example/kraken/views/Login.kt
+--- a/app/src/main/java/com/example/kraken/views/Login.kt	(revision e824df4d40496082ee68a02367057c4edb9cd309)
++++ b/app/src/main/java/com/example/kraken/views/Login.kt	(date 1741092904590)
+@@ -63,7 +63,7 @@
+                 horizontalArrangement = Arrangement.Center
+             ) {
+                 CustomTextField(
+-                    text = "Nombre usuario:",
++                    text = "Correo:",
+                     value = email,
+                     onValueChange = { email = it }
+                 )
+Index: app/src/main/res/drawable/error_image.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/error_image.xml b/app/src/main/res/drawable/error_image.xml
+new file mode 100644
+--- /dev/null	(date 1741123190149)
++++ b/app/src/main/res/drawable/error_image.xml	(date 1741123190149)
+@@ -0,0 +1,5 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:tint="#FF0000" android:viewportHeight="24" android:viewportWidth="24" android:width="24dp">
++      
++    <path android:fillColor="@android:color/white" android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM13,17h-2v-2h2v2zM13,13h-2L11,7h2v6z"/>
++    
++</vector>
+Index: app/src/main/res/drawable/placeholder.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/placeholder.xml b/app/src/main/res/drawable/placeholder.xml
+new file mode 100644
+--- /dev/null	(date 1741123278252)
++++ b/app/src/main/res/drawable/placeholder.xml	(date 1741123278252)
+@@ -0,0 +1,5 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:tint="#0724FF" android:viewportHeight="24" android:viewportWidth="24" android:width="24dp">
++      
++    <path android:fillColor="@android:color/white" android:pathData="M19.35,10.04C18.67,6.59 15.64,4 12,4 9.11,4 6.6,5.64 5.35,8.04 2.34,8.36 0,10.91 0,14c0,3.31 2.69,6 6,6h13c2.76,0 5,-2.24 5,-5 0,-2.64 -2.05,-4.78 -4.65,-4.96zM17,13l-5,5 -5,-5h3V9h4v4h3z"/>
++    
++</vector>

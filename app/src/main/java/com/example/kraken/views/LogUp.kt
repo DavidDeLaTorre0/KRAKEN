@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.sp
 import com.example.kraken.ui.componentes.CustomTextField
 import com.example.kraken.ui.theme.Boton
 import com.example.kraken.ui.theme.Texto
-import com.google.android.play.core.integrity.bd
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

@@ -40,7 +40,6 @@ fun HomeScreen(db: FirebaseFirestore, auth: FirebaseAuth, navigateToLogin: () ->
 
     val pokemonList by viewModel.pokemonList.observeAsState(emptyList())
 
-
     LaunchedEffect(Unit) {
         viewModel.fetchPokemonList()
     }

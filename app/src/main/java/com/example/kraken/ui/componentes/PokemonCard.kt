@@ -1,5 +1,6 @@
 package com.example.kraken.ui.componentes
 
+import com.example.kraken.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,9 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.kraken.data.model.Pokemon
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.ui.res.painterResource
 
 
 @Composable
@@ -36,13 +35,16 @@ fun PokemonCard(pokemon: Pokemon) {
                 .wrapContentSize(), // La columna solo ocupará el espacio necesario
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Carga la imagen del Pokémon
+            // Carga la imagen del Pokémon con coil
+            //Mientras la foto carga, aparecera la nube, y si da error saldra la img de error
             AsyncImage(
                 model = pokemon.imageUrl,
                 contentDescription = pokemon.name,
                 modifier = Modifier
                     .size(120.dp)
-                    .background(Color.Gray, shape = RoundedCornerShape(12.dp))
+                    .background(Color.Gray, shape = RoundedCornerShape(12.dp)),
+                placeholder = painterResource(id = R.drawable.placeholder),
+                error = painterResource(id = R.drawable.error_image)
             )
 
             Spacer(modifier = Modifier.height(8.dp))

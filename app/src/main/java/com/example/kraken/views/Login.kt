@@ -63,7 +63,7 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
                 horizontalArrangement = Arrangement.Center
             ) {
                 CustomTextField(
-                    text = "Nombre usuario:",
+                    text = "Correo:",
                     value = email,
                     onValueChange = { email = it }
                 )
