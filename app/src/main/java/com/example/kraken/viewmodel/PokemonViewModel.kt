@@ -20,7 +20,7 @@ class PokemonViewModel : ViewModel() {
     fun fetchPokemonList() {
         viewModelScope.launch {
             try {
-                val response = repository.getPokemonList(limit = 100, offset = 0)
+                val response = repository.getPokemonList(limit = 100000, offset = 0)
                 _pokemonList.value = response.results
             } catch (e: Exception) {
                 e.printStackTrace()
