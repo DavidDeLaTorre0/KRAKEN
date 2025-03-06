@@ -1,6 +1,7 @@
 package com.example.kraken.views
 
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,8 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kraken.R
 import com.example.kraken.ui.componentes.CustomTextField
 import com.example.kraken.ui.theme.Boton
 import com.example.kraken.ui.theme.ButtonDelete
@@ -38,9 +41,26 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun ProfileScreen( db: FirebaseFirestore,auth: FirebaseAuth, navigateToHome: () -> Unit) {
+fun ProfileScreen(
+    db: FirebaseFirestore,
+    auth: FirebaseAuth,
+    navigateToLogin: () -> Unit,
+    navigateToHome: () -> Unit
+) {
     Scaffold(
-        topBar = { TopBar() }
+        topBar = {
+            ProfileTopBar(
+                onLogoutClick = {
+                    auth.signOut()
+                    Log.i("Profile", "Estoy saliendo")
+                    navigateToLogin()
+                },
+                onBackClick = {
+                    Log.i("Profile", "Estoy CAMBIANDO A HOME")
+                    navigateToHome()
+                }
+            )
+        }
     ) { paddingValues ->
 
         Content(paddingValues)
@@ -50,12 +70,21 @@ fun ProfileScreen( db: FirebaseFirestore,auth: FirebaseAuth, navigateToHome: () 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun ProfileTopBar(onLogoutClick: () -> Unit, onBackClick: () -> Unit) {
     CenterAlignedTopAppBar(
         title = { Text(text = "Perfil", color = Texto, fontSize = 35.sp) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = FondoTopBar),
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = "Volver",
+                    tint = Texto
+                )
+            }
+        },
         actions = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onLogoutClick) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = "Cerrar sesión",
@@ -84,7 +113,7 @@ fun Content(paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.height(50.dp))
 
             // Logo o título
-            Text("Usuario", fontSize = 70.sp, color = Texto)
+            Text("Ajustes", fontSize = 70.sp, color = Texto)
 
             Spacer(modifier = Modifier.height(50.dp))
 
@@ -105,6 +134,8 @@ fun Content(paddingValues: PaddingValues) {
             ) {
                 Text("Guardar", fontSize = 14.sp)
             }
+
+
 
             Spacer(modifier = Modifier.weight(1f)) // Empuja el botón de eliminar hacia abajo
 

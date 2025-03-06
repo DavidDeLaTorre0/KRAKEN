@@ -51,6 +51,7 @@ fun NavigationWrapper(
             ProfileScreen(
                 db,
                 auth,
+                navigateToLogin = { navHostController.navigate("logIn") },
                 navigateToHome = { navHostController.navigate("home") }
             )
         }

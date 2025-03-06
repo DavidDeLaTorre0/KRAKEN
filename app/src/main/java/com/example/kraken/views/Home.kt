@@ -53,7 +53,7 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            TopBar(
+            HomeTopBar(
                 onLogoutClick = {
                     auth.signOut()
                     Log.i("HOME", "Estoy saliendo")
@@ -74,7 +74,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(onLogoutClick: () -> Unit, onProfileClick: () -> Unit) {
+fun HomeTopBar(onLogoutClick: () -> Unit, onProfileClick: () -> Unit) {
     CenterAlignedTopAppBar(
         title = { Text(text = "Hola, Username", color = Texto) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = FondoTopBar),
