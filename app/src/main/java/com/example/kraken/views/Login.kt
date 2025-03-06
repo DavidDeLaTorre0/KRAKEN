@@ -107,6 +107,7 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
                         onClick = {
                             if (email.isBlank() || password.isBlank()) {
                                 errorMessage = "Email o contraseña no pueden estar vacíos"
+                                // errorMessage = stringResource(id = R.string.pokemon_error_message)
                                 //stringResource(R.string.error_login_failed)
                                 //LocalContext.current.getString(R.string.error_login_failed)
                             } else {

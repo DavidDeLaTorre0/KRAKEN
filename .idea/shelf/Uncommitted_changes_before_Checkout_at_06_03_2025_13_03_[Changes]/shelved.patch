@@ -1,0 +1,57 @@
+Index: app/src/main/java/com/example/kraken/views/Home.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.kraken.views\r\n\r\nimport android.util.Log\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.PaddingValues\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.lazy.grid.GridCells\r\nimport androidx.compose.foundation.lazy.grid.LazyVerticalGrid\r\nimport androidx.compose.foundation.lazy.grid.items\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.automirrored.filled.ExitToApp\r\nimport androidx.compose.material3.CenterAlignedTopAppBar\r\nimport androidx.compose.material3.ExperimentalMaterial3Api\r\nimport androidx.compose.material3.Icon\r\nimport androidx.compose.material3.IconButton\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.material3.TextField\r\nimport androidx.compose.material3.TopAppBarDefaults\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.LaunchedEffect\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.livedata.observeAsState\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.res.painterResource\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.example.kraken.R\r\nimport com.example.kraken.data.model.Pokemon\r\nimport com.example.kraken.ui.componentes.PokemonCard\r\nimport com.example.kraken.ui.theme.Fondo\r\nimport com.example.kraken.ui.theme.FondoTopBar\r\nimport com.example.kraken.ui.theme.Texto\r\nimport com.example.kraken.viewmodel.PokemonViewModel\r\nimport com.google.firebase.auth.FirebaseAuth\r\n\r\n@Composable\r\nfun HomeScreen(\r\n    auth: FirebaseAuth,\r\n    navigateToLogin: () -> Unit,\r\n    viewModel: PokemonViewModel,\r\n    navigateToProfile: () -> Unit\r\n) {\r\n\r\n\r\n    val pokemonList by viewModel.pokemonList.observeAsState(emptyList())\r\n//    var searchText by remember { mutableStateOf(\"\") }\r\n\r\n    LaunchedEffect(Unit) {\r\n        viewModel.fetchPokemonList()\r\n    }\r\n\r\n    Scaffold(\r\n        topBar = {\r\n            HomeTopBar(\r\n                onLogoutClick = {\r\n                    auth.signOut()\r\n                    Log.i(\"HOME\", \"Estoy saliendo\")\r\n                    navigateToLogin()\r\n                },\r\n                onProfileClick = {\r\n                    Log.i(\"USR\", \"Estoy CAMBIANDO A PROFILE\")\r\n                    navigateToProfile()\r\n                }\r\n            )\r\n\r\n        }\r\n    ) { paddingValues ->\r\n\r\n        if (pokemonList.isEmpty()) {\r\n            // Si no hay Pokémon cargados y no está cargando, mostrar mensaje de error\r\n            ErrorMessage(paddingValues)\r\n        } else {\r\n            // Si hay Pokémon cargados, mostrar la lista\r\n            Content(paddingValues, pokemonList)\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun ErrorMessage(paddingValues: PaddingValues) {\r\n    Text(\r\n        text = \"Error al cargar los Pokémon. Intenta nuevamente.\",\r\n        modifier = Modifier\r\n            .padding(paddingValues)\r\n            .fillMaxSize()\r\n            .background(Fondo)\r\n            .padding(16.dp),\r\n        color = Color.Red,\r\n        style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp)\r\n    )\r\n}\r\n\r\n@OptIn(ExperimentalMaterial3Api::class)\r\n@Composable\r\nfun HomeTopBar(onLogoutClick: () -> Unit, onProfileClick: () -> Unit) {\r\n    CenterAlignedTopAppBar(\r\n        title = { Text(text = \"Hola, Username\", color = Texto) },\r\n        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = FondoTopBar),\r\n        navigationIcon = {\r\n            IconButton(onClick = onProfileClick) {\r\n                Icon(\r\n                    painter = painterResource(id = R.drawable.account_circle),\r\n                    contentDescription = \"Cerrar sesión\",\r\n                    tint = Texto\r\n                )\r\n            }\r\n        },\r\n        actions = {\r\n            IconButton(onClick = onLogoutClick) {\r\n                Icon(\r\n                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,\r\n                    contentDescription = \"Cerrar sesión\",\r\n                    tint = Texto\r\n                )\r\n            }\r\n        }\r\n    )\r\n}\r\n\r\n@Composable\r\nfun SearchBar(searchText: String, onSearchTextChange: (String) -> Unit) {\r\n    TextField(\r\n        value = searchText,\r\n        onValueChange = onSearchTextChange,\r\n        placeholder = { Text(\"Buscar Pokémon...\") },\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(8.dp),\r\n        singleLine = true\r\n    )\r\n}\r\n\r\n@Composable\r\nfun Content(paddingValues: PaddingValues, pokemonList: List<Pokemon>) {\r\n    LazyVerticalGrid(\r\n        columns = GridCells.Fixed(2), // 3 columnas\r\n        modifier = Modifier\r\n            .padding(paddingValues)\r\n            .fillMaxSize()\r\n            .background(Fondo),\r\n        contentPadding = PaddingValues(8.dp)\r\n    ) {\r\n        items(pokemonList) { pokemon ->\r\n            PokemonCard(pokemon)\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/kraken/views/Home.kt b/app/src/main/java/com/example/kraken/views/Home.kt
+--- a/app/src/main/java/com/example/kraken/views/Home.kt	(revision 0f0cef4b454a41e188b851f026800c1028148d43)
++++ b/app/src/main/java/com/example/kraken/views/Home.kt	(date 1741262168727)
+@@ -2,6 +2,7 @@
+ 
+ import android.util.Log
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.PaddingValues
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fillMaxWidth
+@@ -23,9 +24,11 @@
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.livedata.observeAsState
++import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.res.painterResource
++import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import com.example.kraken.R
+@@ -82,16 +85,18 @@
+ 
+ @Composable
+ fun ErrorMessage(paddingValues: PaddingValues) {
+-    Text(
+-        text = "Error al cargar los Pokémon. Intenta nuevamente.",
++    Box(
+         modifier = Modifier
+-            .padding(paddingValues)
+             .fillMaxSize()
+-            .background(Fondo)
+-            .padding(16.dp),
+-        color = Color.Red,
+-        style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp)
+-    )
++            .padding(paddingValues)
++    ) {
++        Text(
++            text = stringResource(id = R.string.pokemon_error_message),
++            modifier = Modifier.align(Alignment.Center),
++            color = Texto,
++            style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp)
++        )
++    }
+ }
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
