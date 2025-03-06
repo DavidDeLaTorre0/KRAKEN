@@ -10,6 +10,7 @@ import com.example.kraken.viewmodel.PokemonViewModel
 import com.example.kraken.views.HomeScreen
 import com.example.kraken.views.LogUpScreen
 import com.example.kraken.views.LoginScreen
+import com.example.kraken.views.ProfileScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -40,10 +41,17 @@ fun NavigationWrapper(
         }
         composable("home") {
             HomeScreen(
-                db,
                 auth,
                 navigateToLogin = { navHostController.navigate("logIn") },
+                navigateToProfile = { navHostController.navigate("profile") },
                 viewModel = pokemonViewModel
+            )
+        }
+        composable("profile") {
+            ProfileScreen(
+                db,
+                auth,
+                navigateToHome = { navHostController.navigate("home") }
             )
         }
     }
