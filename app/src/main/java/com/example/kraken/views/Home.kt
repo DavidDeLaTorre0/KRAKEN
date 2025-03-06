@@ -24,8 +24,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.kraken.R
 import com.example.kraken.data.model.Pokemon
 import com.example.kraken.ui.componentes.PokemonCard
@@ -68,8 +70,28 @@ fun HomeScreen(
         }
     ) { paddingValues ->
 
-        Content(paddingValues, pokemonList)
+        if (pokemonList.isEmpty()) {
+            // Si no hay Pokémon cargados y no está cargando, mostrar mensaje de error
+            ErrorMessage(paddingValues)
+        } else {
+            // Si hay Pokémon cargados, mostrar la lista
+            Content(paddingValues, pokemonList)
+        }
     }
+}
+
+@Composable
+fun ErrorMessage(paddingValues: PaddingValues) {
+    Text(
+        text = "Error al cargar los Pokémon. Intenta nuevamente.",
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
+            .background(Fondo)
+            .padding(16.dp),
+        color = Color.Red,
+        style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

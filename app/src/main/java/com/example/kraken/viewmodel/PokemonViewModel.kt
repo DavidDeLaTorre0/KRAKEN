@@ -17,6 +17,9 @@ class PokemonViewModel : ViewModel() {
     private val _pokemonList = MutableLiveData<List<Pokemon>>(emptyList())
     val pokemonList: LiveData<List<Pokemon>> = _pokemonList
 
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
+
     fun fetchPokemonList() {
         viewModelScope.launch {
             try {
