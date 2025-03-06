@@ -2,6 +2,7 @@ package com.example.kraken.views
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -47,7 +51,12 @@ fun HomeScreen(
 
 
     val pokemonList by viewModel.pokemonList.observeAsState(emptyList())
-//    var searchText by remember { mutableStateOf("") }
+    var searchText by remember { mutableStateOf("") }
+
+
+    val filteredPokemonList = pokemonList.filter { pokemon ->
+        pokemon.name.contains(searchText, ignoreCase = true)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.fetchPokemonList()
@@ -70,12 +79,15 @@ fun HomeScreen(
         }
     ) { paddingValues ->
 
-        if (pokemonList.isEmpty()) {
-            // Si no hay Pokémon cargados y no está cargando, mostrar mensaje de error
-            ErrorMessage(paddingValues)
-        } else {
-            // Si hay Pokémon cargados, mostrar la lista
-            Content(paddingValues, pokemonList)
+        Column(modifier = Modifier.padding(paddingValues)) {
+            SearchBar(searchText = searchText, onSearchTextChange = { searchText = it })
+            if (pokemonList.isEmpty()) {
+                // Si no hay Pokémon cargados y no está cargando, mostrar mensaje de error
+                ErrorMessage(paddingValues)
+            } else {
+                // Si hay Pokémon cargados, mostrar la lista
+                Content(filteredPokemonList)
+            }
         }
     }
 }
@@ -128,18 +140,16 @@ fun SearchBar(searchText: String, onSearchTextChange: (String) -> Unit) {
         onValueChange = onSearchTextChange,
         placeholder = { Text("Buscar Pokémon...") },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+            .fillMaxWidth(),
         singleLine = true
     )
 }
 
 @Composable
-fun Content(paddingValues: PaddingValues, pokemonList: List<Pokemon>) {
+fun Content(pokemonList: List<Pokemon>) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // 3 columnas
         modifier = Modifier
-            .padding(paddingValues)
             .fillMaxSize()
             .background(Fondo),
         contentPadding = PaddingValues(8.dp)
