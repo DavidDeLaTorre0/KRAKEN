@@ -3,8 +3,9 @@
   Para este pequeño proyecto trabajaremos: [Erik](https://github.com/MeLLamoTawet) y [David](https://github.com/DavidDeLaTorre0).
 
 ## CONTRIBUCION
-  ERIK - VISTAS LOGIN, LOGUP, HOME.    
-  DAVID - LOGICAS DE LAS ANTERIORES Y CONSUMICION API (Retroffit), NAVIGATION WRAPPER, MVVM.
+  ERIK - VISTAS LOGIN, LOGUP, HOME, PROFILE.    
+  DAVID - LOGICAS DE LAS ANTERIORES Y CONSUMICION API (Retroffit), NAVIGATION WRAPPER.
+  
 ## Versiones
 Trabajaremos con las siguiente version: 
   - VERSION DE ANDROID STUDIO 24.2.2
