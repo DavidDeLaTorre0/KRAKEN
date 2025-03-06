@@ -82,10 +82,10 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             SearchBar(searchText = searchText, onSearchTextChange = { searchText = it })
             if (pokemonList.isEmpty()) {
-                // Si no hay Pokémon cargados y no está cargando, mostrar mensaje de error
+
                 ErrorMessage(paddingValues)
             } else {
-                // Si hay Pokémon cargados, mostrar la lista
+
                 Content(filteredPokemonList)
             }
         }
