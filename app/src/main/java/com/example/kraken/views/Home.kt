@@ -52,7 +52,7 @@ fun HomeScreen(
 
     val pokemonList by viewModel.pokemonList.observeAsState(emptyList())
     var searchText by remember { mutableStateOf("") }
-
+    val currentUser = auth.currentUser
 
     val filteredPokemonList = pokemonList.filter { pokemon ->
         pokemon.name.contains(searchText, ignoreCase = true)
@@ -83,7 +83,7 @@ fun HomeScreen(
             SearchBar(searchText = searchText, onSearchTextChange = { searchText = it })
             if (pokemonList.isEmpty()) {
 
-                ErrorMessage(paddingValues)
+                ErrorMessage()
             } else {
 
                 Content(filteredPokemonList)
@@ -92,30 +92,18 @@ fun HomeScreen(
     }
 }
 
-@Composable
-fun ErrorMessage(paddingValues: PaddingValues) {
-    Text(
-        text = "Error al cargar los Pokémon. Intenta nuevamente.",
-        modifier = Modifier
-            .padding(paddingValues)
-            .fillMaxSize()
-            .background(Fondo)
-            .padding(16.dp),
-        color = Color.Red,
-        style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp)
-    )
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(onLogoutClick: () -> Unit, onProfileClick: () -> Unit) {
     CenterAlignedTopAppBar(
-        title = { Text(text = "Hola, Username", color = Texto) },
+        title = { Text(text = "Hola, usuario", color = Texto) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = FondoTopBar),
         navigationIcon = {
             IconButton(onClick = onProfileClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.account_circle),
+                    painter = painterResource(id = R.drawable.ic_settings),
                     contentDescription = "Cerrar sesión",
                     tint = Texto
                 )
@@ -148,7 +136,7 @@ fun SearchBar(searchText: String, onSearchTextChange: (String) -> Unit) {
 @Composable
 fun Content(pokemonList: List<Pokemon>) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2), // 3 columnas
+        columns = GridCells.Fixed(2),
         modifier = Modifier
             .fillMaxSize()
             .background(Fondo),
@@ -158,4 +146,16 @@ fun Content(pokemonList: List<Pokemon>) {
             PokemonCard(pokemon)
         }
     }
+}
+@Composable
+fun ErrorMessage() {
+    Text(
+        text = "Error al cargar los Pokémon. Intentalo más tarde.",
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Fondo)
+            .padding(16.dp),
+        color = Color.Red,
+        style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp)
+    )
 }

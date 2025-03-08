@@ -146,41 +146,46 @@ fun LogUpScreen(auth: FirebaseAuth, db:FirebaseFirestore, navigateToLogin: () ->
 
                                 errorMessage = "Correo invalido, reviselo"
                             } else {
-                                if (username.isBlank() || password.isBlank()) {
-                                    errorMessage = "No puedes dejar campos vacios"
+                                if (username.isBlank()) {
+                                    errorMessage = "El nombre está vacio"
                                 } else {
-                                    errorMessage = ""
-                                    // Intentar crear el usuario
-                                    auth.createUserWithEmailAndPassword(email, password)
-                                        .addOnCompleteListener { task ->
-                                            if (task.isSuccessful) {
-                                                val user = FirebaseAuth.getInstance().currentUser;
+                                    if(password.isBlank() || password2.isBlank()){
+                                        errorMessage = "Las contraseñas no pueden estar vacias"
+                                    }else{
+                                        errorMessage = ""
+                                        // Intentar crear el usuario
+                                        auth.createUserWithEmailAndPassword(email, password)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
 
-                                                val userMap = hashMapOf(
-                                                    "nombre" to username,
-                                                    "email" to email
-                                                )
+                                                    val user = FirebaseAuth.getInstance().currentUser;
 
-                                                if (user != null) {
-                                                    db.collection("usuarios")
-                                                        .document(user.uid)
-                                                        .set(userMap).addOnCompleteListener {
-                                                            Log.i("CUsuario", "Success")
-                                                        }.addOnFailureListener {
-                                                            Log.i("CUsuario", "Failure")
-                                                        }.addOnCompleteListener {
-                                                            Log.i("CUsuario", "Complete")
-                                                        }
+                                                    val userMap = hashMapOf(
+                                                        "nombre" to username,
+                                                        "email" to email
+                                                    )
+
+                                                    if (user != null) {
+                                                        db.collection("usuarios")
+                                                            .document(user.uid)
+                                                            .set(userMap).addOnCompleteListener {
+                                                                Log.i("CUsuario", "Success")
+                                                            }.addOnFailureListener {
+                                                                Log.i("CUsuario", "Failure")
+                                                            }.addOnCompleteListener {
+                                                                Log.i("CUsuario", "Complete")
+                                                            }
+                                                    }
+
+                                                    Log.i("REGIS", "Registro OK")
+                                                    navigateToLogin()
+                                                } else {
+                                                    Log.i("REGIS", "Registro KO")
+                                                    errorMessage =
+                                                        "El correo ya esta asociado a otra cuenta"
                                                 }
-
-                                                Log.i("REGIS", "Registro OK")
-                                                navigateToLogin()
-                                            } else {
-                                                Log.i("REGIS", "Registro KO")
-                                                errorMessage =
-                                                    "El correo ya esta asociado a otra cuenta"
                                             }
-                                        }
+                                    }
                                 }
 
                             }

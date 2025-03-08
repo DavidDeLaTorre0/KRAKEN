@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.kraken.navigation.NavigationWrapper
 import com.example.kraken.ui.theme.Fondo
 import com.example.kraken.ui.theme.KRAKENTheme
 import com.google.firebase.Firebase

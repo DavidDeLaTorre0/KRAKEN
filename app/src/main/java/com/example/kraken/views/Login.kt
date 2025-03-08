@@ -116,12 +116,13 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit, navigateToLogUp:
                                     .addOnCompleteListener { task ->
 
                                         if (task.isSuccessful) {
-                                            //Navegar
 
+                                            //Navegar
                                             Log.i("LOGIN", "LOGIN OK")
                                             navigateToHome()
 
                                         } else {
+
                                             //Error
                                             Log.i("LOGIN", "LOGIN KO")
                                             errorMessage = "Error al iniciar sesión"
