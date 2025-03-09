@@ -40,9 +40,11 @@ import com.example.kraken.ui.theme.FondoTopBar
 import com.example.kraken.ui.theme.Texto
 import com.example.kraken.viewmodel.PokemonViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun HomeScreen(
+    db: FirebaseFirestore,
     auth: FirebaseAuth,
     navigateToLogin: () -> Unit,
     viewModel: PokemonViewModel,
@@ -52,10 +54,32 @@ fun HomeScreen(
 
     val pokemonList by viewModel.pokemonList.observeAsState(emptyList())
     var searchText by remember { mutableStateOf("") }
-    val currentUser = auth.currentUser
+    var userName by remember { mutableStateOf("Cargando...") }
+    val user = auth.currentUser
+    val userId = user?.uid
 
     val filteredPokemonList = pokemonList.filter { pokemon ->
         pokemon.name.contains(searchText, ignoreCase = true)
+    }
+
+    LaunchedEffect(userId) {
+        userId?.let {
+            db.collection("usuarios")
+                .document(it)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        userName = document.getString("nombre") ?: "Usuario"
+                    } else {
+                        userName = "Usuario"
+                        Log.i("DB", "NO SE HA ENCONTRADO NINGUN NOMBRE")
+                    }
+                }
+                .addOnFailureListener {
+                    Log.i("DB", "ERROR AL RECOGER NOMBRE")
+                    userName = "Usuario"
+                }
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -65,6 +89,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             HomeTopBar(
+                userName,
                 onLogoutClick = {
                     auth.signOut()
                     Log.i("HOME", "Estoy saliendo")
@@ -93,12 +118,11 @@ fun HomeScreen(
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(onLogoutClick: () -> Unit, onProfileClick: () -> Unit) {
+fun HomeTopBar(userName: String, onLogoutClick: () -> Unit, onProfileClick: () -> Unit) {
     CenterAlignedTopAppBar(
-        title = { Text(text = "Hola, usuario", color = Texto) },
+        title = { Text(text = "Hola, $userName", color = Texto) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = FondoTopBar),
         navigationIcon = {
             IconButton(onClick = onProfileClick) {
@@ -147,6 +171,7 @@ fun Content(pokemonList: List<Pokemon>) {
         }
     }
 }
+
 @Composable
 fun ErrorMessage() {
     Text(

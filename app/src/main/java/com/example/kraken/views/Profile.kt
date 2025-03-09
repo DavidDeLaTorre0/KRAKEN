@@ -30,11 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kraken.R
@@ -140,7 +137,38 @@ fun Content(paddingValues: PaddingValues, navigateToLogin: () -> Unit) {
 
                 // Botón Guardar
                 Button(
-                    onClick = { },
+                    onClick = {
+                        if (user != null && username.isNotEmpty()) {
+                            val db = FirebaseFirestore.getInstance()
+
+                            // Actualizar el nombre de usuario en Firestore
+                            db.collection("usuarios")
+                                .document(user.uid)
+                                .update("nombre", username)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Toast.makeText(
+                                            context,
+                                            "Nombre de usuario actualizado con éxito",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Error al actualizar el nombre de usuario: ${task.exception?.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Por favor ingresa un nombre de usuario válido",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Boton),
                     modifier = Modifier.width(270.dp)
                 ) {

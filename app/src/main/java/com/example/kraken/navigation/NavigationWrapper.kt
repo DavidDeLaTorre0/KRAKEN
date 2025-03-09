@@ -41,6 +41,7 @@ fun NavigationWrapper(
         }
         composable("home") {
             HomeScreen(
+                db,
                 auth,
                 navigateToLogin = { navHostController.navigate("logIn") },
                 navigateToProfile = { navHostController.navigate("profile") },
